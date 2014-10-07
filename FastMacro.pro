@@ -17,14 +17,18 @@ SOURCES += main.cpp\
     commandline.cpp \
     commandexplorer.cpp \
     addingdialog.cpp \
-    macrosfactory.cpp
+    macrosfactory.cpp \
+    macros.cpp \
+    command.cpp
 
 HEADERS  += mainwindow.h \
     commandline.h \
     commandexplorer.h \
     keypressfilter.h \
     addingdialog.h \
-    macrosfactory.h
+    macrosfactory.h \
+    macros.h \
+    command.h
 
 FORMS    += mainwindow.ui \
     addingdialog.ui
