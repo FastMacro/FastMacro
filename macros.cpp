@@ -1,15 +1,13 @@
 #include "macros.h"
+#include <QDebug>
 #include <string>
 
-Macros::Macros(int listSize, Command *list)
+Macros::Macros(Command *command)
+	: mCommand(command)
 {
-    size = listSize;
-    commandList = list;
-    memset(commandList, 0, size * sizeof(Command));
 }
 
 void Macros::exec()
 {
-    for (int i = 0; i < size; i++)
-        commandList[i].exec();
+	mCommand->exec();
 }

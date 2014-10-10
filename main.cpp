@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "controller.h"
+#include "keypressfilter.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

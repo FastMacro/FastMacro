@@ -1,3 +1,4 @@
+#pragma once
 #include <QDialog>
 #include <QPair>
 
@@ -12,13 +13,17 @@ class AddingDialog : public QDialog
 public:
 	explicit AddingDialog(QWidget *parent = 0);
 	~AddingDialog();
+	QString &getName();
+	QString &getPath();
 
 signals:
-	void throwMacros(QString str);
+	void wasUpdated();
 
 public slots:
-	void wasGood();
+	void OkWasClicked();
 
 private:
 	Ui::AddingDialog *ui;
+	QString mName;
+	QString mPath;
 };

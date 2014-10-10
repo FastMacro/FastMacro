@@ -1,9 +1,8 @@
 #include <QMainWindow>
 #include "keypressfilter.h"
-#include "commandline.h"
-#include "commandexplorer.h"
 #include "addingdialog.h"
-#include "macrosfactory.h"
+#include "controller.h"
+#include "sender.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,13 +20,11 @@ public slots:
 	void yesWasClicked();
 	void noWasClicked();
 	void addWasClicked();
-	void updateMakers();
 
 private:
 	Ui::MainWindow *ui;
-	KeyPressFilter *keyFilter;
-	CommandLine *commandLine;
-	CommandExplorer *commandExplorer;
-	MacrosFactory *macrosFactory;
-	AddingDialog ad;
+	KeyPressFilter *mKeyFilter;
+	Controller *mController;
+	Sender *mSender;
+	AddingDialog *mAd;
 };

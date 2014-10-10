@@ -6,7 +6,7 @@ AddingDialog::AddingDialog(QWidget *parent) :
 	ui(new Ui::AddingDialog)
 {
 	ui->setupUi(this);
-	connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(wasGood()));
+	connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(OkWasClicked()));
 	connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(close()));
 }
 
@@ -15,10 +15,20 @@ AddingDialog::~AddingDialog()
 	delete ui;
 }
 
-void AddingDialog::wasGood()
+void AddingDialog::OkWasClicked()
 {
-	QString str = ui->macrosLine->text().toUpper();
-	str += "#" + ui->pathLine->text();
-	emit throwMacros(str);
+	mName = ui->macrosLine->text().toUpper();
+	mPath = ui->pathLine->text();
+	emit wasUpdated();
 	close();
+}
+
+QString &AddingDialog::getName()
+{
+	return mName;
+}
+
+QString &AddingDialog::getPath()
+{
+	return mPath;
 }

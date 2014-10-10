@@ -3,23 +3,17 @@
 #include <QString>
 #include <QMap>
 #include <QDebug>
+#include "macros.h"
 
 class MacrosFactory : public QObject
 {
 	Q_OBJECT
 
 public:
-	MacrosFactory();
+	MacrosFactory(QMap<QString, Macros> *macroses);
 	~MacrosFactory();
-	void makeMacros(QString macros, QString path);
-	QMap<QString, QString> * getMap();
-
-signals:
-	void wasUpdated();
-
-public slots:
-	void catchMacros(QString str);
+	void makeMacros(QString &key, QString &path);
 
 private:
-	QMap<QString, QString> * map;
+	QMap<QString, Macros> * mMacros;
 };

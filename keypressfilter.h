@@ -1,3 +1,4 @@
+#pragma once
 #include <QEvent>
 #include <QKeyEvent>
 #include <QtGui>
@@ -19,7 +20,6 @@ protected:
 	{
 		if (event->type() == QEvent::KeyPress) {
 			QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-			qDebug("Ate key press %d", keyEvent->key());
 			emit throwChar(keyEvent->key());
 			return true;
 		} else {

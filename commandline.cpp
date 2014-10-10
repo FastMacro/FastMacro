@@ -1,45 +1,40 @@
 #include "commandline.h"
 
-CommandLine::CommandLine(int size, QList<QString> &commandList)
-	: size(size), commandList(commandList), map(new QMap<QString, QString>)
+CommandLine::CommandLine(int size, QMap<QString, Macros> *macroses)
+	: mSize(size), mMacros(macroses)
 {
 }
 
 void CommandLine::add(QChar &currentChar)
 {
-	if (list.size() == size)
-		list.pop_front();
-	list.push_back(currentChar);
+	if (mList.size() == mSize)
+		mList.pop_front();
+	mList.push_back(currentChar);
 	scan();
 }
 
 void CommandLine::scan()
-{
-	qDebug() << "scan : " << map->size();
+	{
 	QList<QChar>::iterator i;
-	 i = list.end();
-	 --i;
-	 QString curStr(*i);
-	 while(i + 1 != list.begin())
-	 {
-		 if (commandList.contains(curStr) || map->contains(curStr))
-		 {
-			 emit throwCommand(curStr);
-			 list.clear();
-			 break;
-		 }
-		 --i;
-		 curStr.push_front(*i);
-	 }
+	i = mList.end();
+	--i;
+	QString curStr(*i);
+	while(i + 1 != mList.begin())
+	{
+		if (mMacros->contains(curStr))
+		{
+			/// Если нашли - запустили
+			(*mMacros)[curStr].exec();
+			mList.clear();
+			break;
+		}
+		--i;
+		curStr.push_front(*i);
+	}
 }
 
 void CommandLine::catchChar(QChar key)
 {
 	qDebug() << "CommandLine : char : " <<  key;
 	add(key);
-}
-
-void CommandLine::updateMap(MacrosFactory *macrosFactory)
-{
-	map = macrosFactory->getMap();
 }

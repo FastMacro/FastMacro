@@ -15,20 +15,22 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     commandline.cpp \
-    commandexplorer.cpp \
     addingdialog.cpp \
     macrosfactory.cpp \
     macros.cpp \
-    command.cpp
+    command.cpp \
+    controller.cpp \
+    sender.cpp
 
 HEADERS  += mainwindow.h \
     commandline.h \
-    commandexplorer.h \
     keypressfilter.h \
     addingdialog.h \
     macrosfactory.h \
     macros.h \
-    command.h
+    command.h \
+    controller.h \
+    sender.h
 
 FORMS    += mainwindow.ui \
     addingdialog.ui

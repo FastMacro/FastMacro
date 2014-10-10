@@ -5,21 +5,28 @@
 
 class Command
 {
-    public:
-        Command(const QString &execPath);
-        virtual void exec() = 0;
-    protected:
-        QString path;
+	public:
+		Command(const QString &execPath);
+		Command() {}
+		virtual void exec() = 0;
+	protected:
+		QString path;
 };
 
 class WebpageCommand : public Command {
-    void exec();
+public:
+	WebpageCommand(const QString &execPath) : Command(execPath){}
+	void exec();
 };
 
 class FileCommand: public Command {
-    void exec();
+public:
+	FileCommand(const QString &execPath) : Command(execPath){}
+	void exec();
 };
 
 class SystemCommand: public Command {
-    void exec();
+public:
+	SystemCommand(const QString &execPath) : Command(execPath){}
+	void exec();
 };

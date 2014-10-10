@@ -1,32 +1,18 @@
 #include "macrosfactory.h"
 
-MacrosFactory::MacrosFactory()
+MacrosFactory::MacrosFactory(QMap<QString, Macros> *macroses) :
+	mMacros(macroses)
 {
-	map = new QMap<QString, QString>();
+	macroses->insert("VK", Macros(new WebpageCommand("http://vk.com/feed")));
+	macroses->insert("CMD", Macros(new SystemCommand("gnome-terminal")));
 }
 
 MacrosFactory::~MacrosFactory()
 {
-	delete map;
 }
 
-void MacrosFactory::makeMacros(QString macros, QString path)
+void MacrosFactory::makeMacros(QString &key, QString &path)
 {
-	map->insert(macros, path);
-	emit wasUpdated();
-}
-
-void MacrosFactory::catchMacros(QString str)
-{
-	int index = 0;
-	for (; index < str.size(); ++index)
-		if (str.at(index) == QChar('#'))
-			break;
-	qDebug() << str << " " << str.mid(0, index) << " " << str.mid(index + 1, str.size() - index - 1);
-	makeMacros(str.mid(0, index), str.mid(index + 1, str.size() - index - 1));
-}
-
-QMap<QString, QString> * MacrosFactory::getMap()
-{
-	return map;
+	/// Тут должны создаваться разные, но пока есть только 1
+	mMacros->insert(key, Macros(new FileCommand(path)));
 }
