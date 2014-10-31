@@ -12,7 +12,7 @@ class MacrosFactory : public QObject
 public:
 	MacrosFactory(QMap<QString, Macros> *macroses);
 	~MacrosFactory();
-	void makeMacros(QString &key, QString &path);
+	void makeMacros(const QString &key, Command **commands, int size);
 
 private:
 	QMap<QString, Macros> * mMacros;

@@ -3,11 +3,20 @@
 #include <string>
 
 Macros::Macros(Command *command)
-	: mCommand(command)
 {
+	commandList = new Command*[1];
+	commandList[0] = command;
+	commandListSize = 1;
+}
+
+Macros::Macros(Command **commands, int size)
+{
+	commandList = commands;
+	commandListSize = size;
 }
 
 void Macros::exec()
 {
-	mCommand->exec();
+	for (int i = 0; i < commandListSize; i++)
+		commandList[i]->exec();
 }

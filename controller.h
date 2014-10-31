@@ -13,7 +13,7 @@ class Controller : public QObject
 public:
 	Controller();
 	~Controller();
-	void makeMacros(QString &key, QString &path);
+	void makeMacros(QString key, Command **commands, int size);
 	void setConnection(KeyPressFilter *keyFilter);
 
 private:

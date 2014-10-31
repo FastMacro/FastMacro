@@ -1,6 +1,13 @@
 #pragma once
 #include <QDialog>
 #include <QPair>
+#include <QMap>
+#include <QComboBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QDialogButtonBox>
+#include <QList>
+#include "command.h"
 
 namespace Ui {
 class AddingDialog;
@@ -13,17 +20,29 @@ class AddingDialog : public QDialog
 public:
 	explicit AddingDialog(QWidget *parent = 0);
 	~AddingDialog();
-	QString &getName();
-	QString &getPath();
+	Command **outputCommandList = nullptr;
+	QString outputKey;
+	int outputSize;
 
 signals:
 	void wasUpdated();
 
-public slots:
-	void OkWasClicked();
+private slots:
+	void OkClicked();
+	void CancelClicked();
+	void keyStringChanged(const QString *key);
+	void modeChanged(const QString &mode);
+	void createCommandWidget();
 
 private:
+	void initializeWindow();
+	void initializeExecutionModes();
 	Ui::AddingDialog *ui;
-	QString mName;
-	QString mPath;
+	QVBoxLayout *inputLayout;
+	QVBoxLayout *macrosLayout;
+	QLineEdit *keyString;
+	QComboBox *selectExecutionMode;
+	QDialogButtonBox *buttonBox;
+	QMap<QString, QString> *executionModes;
+	QList<PreCommand*> *commandList;
 };

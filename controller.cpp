@@ -14,10 +14,10 @@ Controller::~Controller()
 	delete mFactory;
 }
 
-void Controller::makeMacros(QString &key, QString &path)
+void Controller::makeMacros(QString key, Command **commands, int size)
 {
 	/// Нужно придумать как лучше передавать какой именно вид макроса определен (web, file, system)
-	mFactory->makeMacros(key, path);
+	mFactory->makeMacros(key, commands, size);
 }
 
 void Controller::setConnection(KeyPressFilter *keyFilter)

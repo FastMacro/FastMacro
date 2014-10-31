@@ -1,14 +1,14 @@
 #pragma once
 #include "command.h"
 
-
-/// Придумать как лучше реализовать список комманд макроса
 class Macros
 {
 public:
-	Macros(Command *command);
 	Macros(){}
+	Macros(Command *command);
+	Macros(Command **commands, int size);
 	void exec();
 private:
-	Command *mCommand;
+	Command **commandList = nullptr;
+	int commandListSize = 0;
 };

@@ -12,5 +12,5 @@ void Sender::newMacrosWasCreated()
 
 void Sender::getAndSend()
 {
-	mController->makeMacros(mDial->getName(), mDial->getPath());
+	mController->makeMacros(mDial->outputKey, mDial->outputCommandList, mDial->outputSize);
 }
