@@ -46,3 +46,13 @@ private:
 	QMap<QString, QString> *executionModes;
 	QList<PreCommand*> *commandList;
 };
+
+class CommandDestructor : public QObject {
+	Q_OBJECT
+	public:
+		PreCommand *command;
+		QLayout *commandLayout;
+		QList<PreCommand*> *commandList;
+	public slots:
+		void deleteCommand();
+};

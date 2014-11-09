@@ -38,22 +38,29 @@ AddingDialog::~AddingDialog()
 
 void AddingDialog::initializeWindow()
 {
-	ui->mainLayout->addWidget(new QLabel("Macros Constructor"), 1);
+	ui->mainLayout->setSpacing(50);
+	ui->mainLayout->addWidget(new QLabel("Macros Constructor"));
 
-	ui->mainLayout->addWidget(new QLabel("Select macros execution type:"), 1);
+	QVBoxLayout *modeLayout = new QVBoxLayout;
+	ui->mainLayout->addLayout(modeLayout, 1);
+	modeLayout->setSpacing(20);
+
+	modeLayout->addWidget(new QLabel("Select macros execution type:"));
 	selectExecutionMode = new QComboBox();
-	ui->mainLayout->addWidget(selectExecutionMode, 1);
+	modeLayout->addWidget(selectExecutionMode);
 	initializeExecutionModes();
 
 	inputLayout = new QVBoxLayout;
-	ui->mainLayout->addLayout(inputLayout, 1);
+	ui->mainLayout->addLayout(inputLayout);
+	inputLayout->setSpacing(20);
 
 	macrosLayout = new QVBoxLayout;
-	ui->mainLayout->addLayout(macrosLayout, 1);
+	ui->mainLayout->addLayout(macrosLayout);
+	macrosLayout->setSpacing(20);
 
 	QPushButton *addCommandButton = new QPushButton;
 	addCommandButton->setText("Add command");
-	ui->mainLayout->addWidget(addCommandButton, 1);
+	ui->mainLayout->addWidget(addCommandButton);
 	connect(addCommandButton, SIGNAL(clicked()), this, SLOT(createCommandWidget()));
 
 	buttonBox = new QDialogButtonBox;
@@ -126,25 +133,41 @@ void AddingDialog::modeChanged(const QString &mode)
 
 void AddingDialog::createCommandWidget()
 {
-	QVBoxLayout *layout = new QVBoxLayout;
-
-	QLineEdit *path = new QLineEdit;
-	layout->addWidget(path, 3);
+	QGridLayout *layout = new QGridLayout;
+	layout->setSpacing(5);
 
 	QComboBox *box = new QComboBox;
 	for (int i = 0; i < Command::commandTypesNumber; i++)
 		box->addItem(Command::commandTypes[i]);
-	layout->addWidget(box, 2);
+	layout->addWidget(box, 0, 0, 1, 4);
 
 	PreCommand *newCommand = new PreCommand("", box->currentText());
 	commandList->append(newCommand);
 
 	QPushButton *deleteButton = new QPushButton;
 	deleteButton->setText("X");
-	layout->addWidget(deleteButton, 1);
+	layout->addWidget(deleteButton, 0, 4, 1, 1);
+	CommandDestructor *destructor = new CommandDestructor;
+	destructor->command = newCommand;
+	destructor->commandLayout = layout;
+	destructor->commandList = commandList;
+
+	QLineEdit *path = new QLineEdit;
+	layout->addWidget(path,	1, 0, 1, 5);
+
 
 	connect(path, SIGNAL(textChanged(QString)), newCommand, SLOT(updateCommandPath(QString)));
 	connect(box, SIGNAL(currentTextChanged(QString)), newCommand, SLOT(updateCommandType(QString)));
+	connect(deleteButton, SIGNAL(clicked()), destructor, SLOT(deleteCommand()));
+	connect(deleteButton, SIGNAL(clicked()), destructor, SLOT(deleteLater()));
 
 	macrosLayout->addLayout(layout);
+}
+
+void CommandDestructor::deleteCommand()
+{
+	commandList->removeAll(command);
+	delete command;
+	clearLayout(commandLayout);
+	delete commandLayout;
 }
