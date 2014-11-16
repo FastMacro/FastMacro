@@ -20,3 +20,9 @@ void Macros::exec()
 	for (int i = 0; i < commandListSize; i++)
 		commandList[i]->exec();
 }
+
+QPair<Command **, int> Macros::getCommandList()
+{
+	QPair<Command **, int> cPair(commandList, commandListSize);
+	return cPair;
+}

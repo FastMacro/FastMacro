@@ -13,6 +13,5 @@ MacrosFactory::~MacrosFactory()
 
 void MacrosFactory::makeMacros(const QString &key, Command **commands, int size)
 {
-	/// Тут должны создаваться разные, но пока есть только 1
 	mMacros->insert(key.toUpper(), Macros(commands, size));
 }

@@ -48,6 +48,13 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="currentButton">
+      <property name="text">
+       <string>currents</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -56,7 +63,7 @@
      <x>0</x>
      <y>0</y>
      <width>115</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">

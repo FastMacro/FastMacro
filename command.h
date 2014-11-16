@@ -12,6 +12,7 @@ public:
 	Command(const QString &execPath);
 	~Command();
 	virtual void exec() = 0;
+	virtual const QString &getType() = 0;
 	static const int commandTypesNumber = 3;
 	static const QString commandTypes[];
 	const QString &getPath();
@@ -37,17 +38,23 @@ private:
 class WebpageCommand : public Command {
 public:
 	WebpageCommand(const QString &execPath) : Command(execPath){}
+	const QString &getType();
 	void exec();
+	QString type = commandTypes[0];
 };
 
 class FileCommand: public Command {
 public:
 	FileCommand(const QString &execPath) : Command(execPath){}
+	const QString &getType();
 	void exec();
+	QString type = commandTypes[1];
 };
 
 class SystemCommand: public Command {
 public:
 	SystemCommand(const QString &execPath) : Command(execPath){}
+	const QString &getType();
 	void exec();
+	QString type = commandTypes[2];
 };

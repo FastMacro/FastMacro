@@ -3,6 +3,7 @@
 #include "addingdialog.h"
 #include "controller.h"
 #include "sender.h"
+#include "currentmacrosesdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +21,7 @@ public slots:
 	void yesWasClicked();
 	void noWasClicked();
 	void addWasClicked();
+	void currentWasClicked();
 
 private:
 	Ui::MainWindow *ui;
@@ -27,4 +29,5 @@ private:
 	Controller *mController;
 	Sender *mSender;
 	AddingDialog *mAd;
+	CurrentMacrosesDialog *mCm;
 };

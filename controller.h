@@ -15,6 +15,8 @@ public:
 	~Controller();
 	void makeMacros(QString key, Command **commands, int size);
 	void setConnection(KeyPressFilter *keyFilter);
+	void deleteMacros(const QString &name);
+	QMap<QString, Macros> * getMacroses();
 
 private:
 	CommandLine *mCommandLine;

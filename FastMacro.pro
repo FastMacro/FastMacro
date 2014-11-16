@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     macros.cpp \
     command.cpp \
     controller.cpp \
-    sender.cpp
+    sender.cpp \
+    currentmacrosesdialog.cpp
 
 HEADERS  += mainwindow.h \
     commandline.h \
@@ -32,7 +33,9 @@ HEADERS  += mainwindow.h \
     macros.h \
     command.h \
     controller.h \
-    sender.h
+    sender.h \
+    currentmacrosesdialog.h
 
 FORMS    += mainwindow.ui \
-    addingdialog.ui
+    addingdialog.ui \
+    currentmacrosesdialog.ui

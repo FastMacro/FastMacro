@@ -62,13 +62,28 @@ void WebpageCommand::exec()
 	QDesktopServices::openUrl(QUrl(path, QUrl::TolerantMode));
 }
 
+const QString & WebpageCommand::getType()
+{
+	return type;
+}
+
 void FileCommand::exec()
 {
 	QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+}
+
+const QString & FileCommand::getType()
+{
+	return type;
 }
 
 void SystemCommand::exec()
 {
 	QByteArray byteArray = path.toUtf8();
 	system(byteArray.constData());
+}
+
+const QString & SystemCommand::getType()
+{
+	return type;
 }
