@@ -23,8 +23,8 @@ AddingDialog::AddingDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::AddingDialog)
 {
-    ui->setupUi(this);
-    commandList = new QList<PreCommand*>;
+	ui->setupUi(this);
+	commandList = new QList<PreCommand*>;
 }
 
 AddingDialog::~AddingDialog()
@@ -34,9 +34,9 @@ AddingDialog::~AddingDialog()
 
 void AddingDialog::initialize()
 {
-    commandList->clear();
+	commandList->clear();
 
-    clearLayout(ui->mainLayout);
+	clearLayout(ui->mainLayout);
 
 	ui->mainLayout->setSpacing(50);
 	ui->mainLayout->addWidget(new QLabel("Macros Constructor"));
@@ -71,7 +71,7 @@ void AddingDialog::initialize()
 	connect(buttonBox, SIGNAL(rejected()), this, SLOT(CancelClicked()));
 	ui->mainLayout->addWidget(buttonBox);
 
-    show();
+	show();
 }
 
 void AddingDialog::initializeExecutionModes()
@@ -92,7 +92,7 @@ void AddingDialog::CancelClicked()
 
 void AddingDialog::OkClicked()
 {
-    outputSize = commandList->count();
+	outputSize = commandList->count();
 	outputCommandList = new Command*[outputSize];
 	for (int i = 0; i < outputSize; i++) {
 		PreCommand *command = commandList->at(i);

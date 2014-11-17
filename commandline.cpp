@@ -24,7 +24,7 @@ void CommandLine::scan()
 		if (mMacros->contains(curStr))
 		{
 			/// Если нашли - запустили
-            (*mMacros)[curStr].exec();
+			(*mMacros)[curStr].exec();
 			mList.clear();
 			break;
 		}

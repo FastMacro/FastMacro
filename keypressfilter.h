@@ -13,40 +13,40 @@ using namespace std;
 
 class KeyPressFilter : public QObject
 {
-        Q_OBJECT
+		Q_OBJECT
 
 public:
 
-    static KeyPressFilter *getInstance() {
-        if (!instance)
-            instance = new KeyPressFilter;
-        return instance;
-    }
+	static KeyPressFilter *getInstance() {
+		if (!instance)
+			instance = new KeyPressFilter;
+		return instance;
+	}
 
-    static void UpdateKeyState(BYTE *keystate, int keycode)
-    {
-        keystate[keycode] = GetKeyState(keycode);
-    }
+	static void UpdateKeyState(BYTE *keystate, int keycode)
+	{
+		keystate[keycode] = GetKeyState(keycode);
+	}
 
-    static LRESULT CALLBACK MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam);
-    ~KeyPressFilter() {}
+	static LRESULT CALLBACK MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam);
+	~KeyPressFilter() {}
 
 private:
-    KeyPressFilter()
-    {
-        hHook = SetWindowsHookEx(WH_KEYBOARD_LL, MyLowLevelKeyBoardProc, NULL, 0);
-        if(hHook == NULL)
-        {
-            qDebug() << "Hook failed";
-        }
-    }
-    void emitThrow(QChar symbol) {
-        emit throwChar(symbol);
-    }
+	KeyPressFilter()
+	{
+		hHook = SetWindowsHookEx(WH_KEYBOARD_LL, MyLowLevelKeyBoardProc, NULL, 0);
+		if(hHook == NULL)
+		{
+			qDebug() << "Hook failed";
+		}
+	}
+	void emitThrow(QChar symbol) {
+		emit throwChar(symbol);
+	}
 
-    HHOOK hHook;
-    static KeyPressFilter *instance;
+	HHOOK hHook;
+	static KeyPressFilter *instance;
 
 signals:
-    void throwChar(QChar key);
+	void throwChar(QChar key);
 };

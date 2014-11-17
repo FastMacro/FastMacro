@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 	mAd = new AddingDialog();
 	mCm = new CurrentMacrosesDialog();
-    mKeyFilter = KeyPressFilter::getInstance();
+	mKeyFilter = KeyPressFilter::getInstance();
 	installEventFilter(mKeyFilter);
 	mController = new Controller();
 	mController->setConnection(mKeyFilter);
@@ -47,7 +47,7 @@ void MainWindow::noWasClicked()
 
 void MainWindow::addWasClicked()
 {
-    mAd->initialize();
+	mAd->initialize();
 }
 
 void MainWindow::currentWasClicked()

@@ -9,7 +9,7 @@ public:
 	Macros(Command *command);
 	Macros(Command **commands, int size);
 	QPair<Command **, int> getCommandList();
-    void exec();
+	void exec();
 
 private:
 	Command **commandList = nullptr;
