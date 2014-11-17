@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     command.cpp \
     controller.cpp \
     sender.cpp \
-    currentmacrosesdialog.cpp
+    currentmacrosesdialog.cpp \
+    keypressfilter.cpp
 
 HEADERS  += mainwindow.h \
     commandline.h \

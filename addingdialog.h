@@ -19,6 +19,7 @@ class AddingDialog : public QDialog
 
 public:
 	explicit AddingDialog(QWidget *parent = 0);
+    void initialize();
 	~AddingDialog();
 	Command **outputCommandList = nullptr;
 	QString outputKey;
@@ -35,7 +36,6 @@ private slots:
 	void createCommandWidget();
 
 private:
-	void initializeWindow();
 	void initializeExecutionModes();
 	Ui::AddingDialog *ui;
 	QVBoxLayout *inputLayout;

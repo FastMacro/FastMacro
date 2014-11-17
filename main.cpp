@@ -2,6 +2,7 @@
 #include "controller.h"
 #include "keypressfilter.h"
 #include <QApplication>
+#include <functional>
 
 int main(int argc, char *argv[])
 {
