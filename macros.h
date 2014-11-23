@@ -6,12 +6,14 @@ class Macros
 {
 public:
 	Macros(){}
-	Macros(Command *command);
-	Macros(Command **commands, int size);
+	Macros(const QString &macrosName, Command *command);
+	Macros(const QString &macrosName, Command **commands, int size);
 	QPair<Command **, int> getCommandList();
 	void exec();
+	QString getName();
 
 private:
 	Command **commandList = nullptr;
 	int commandListSize = 0;
+	QString name;
 };

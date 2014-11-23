@@ -23,9 +23,11 @@ public:
 	explicit CurrentMacrosesDialog(QWidget *parent = 0);
 	~CurrentMacrosesDialog();
 	void showMacroses(QMap<QString, Macros> *macroses);
+	void emitMacrosEdit(const QString &name);
 
 signals:
 	void wasUpdated(QString);
+	void editMacros(QString);
 
 public slots:
 	void recountNumber();
@@ -48,7 +50,18 @@ class MacrosDestructor : public QObject {
 
 	signals:
 		void wasUpdated(QString);
+		void editMacros(QString);
 
 	public slots:
 		void deleteMacros();
+};
+
+class MacrosUpdater : public QObject {
+	Q_OBJECT
+	public:
+		MacrosUpdater(QString macrosName, CurrentMacrosesDialog *curDial) : name(macrosName), dialog(curDial) {}
+		QString name;
+		CurrentMacrosesDialog *dialog;
+	public slots:
+		void updateMacros();
 };

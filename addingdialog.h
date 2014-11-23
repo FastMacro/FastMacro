@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <QDialogButtonBox>
 #include <QList>
+#include <macros.h>
 #include "command.h"
 
 namespace Ui {
@@ -19,24 +20,30 @@ class AddingDialog : public QDialog
 
 public:
 	explicit AddingDialog(QWidget *parent = 0);
-    void initialize();
 	~AddingDialog();
 	Command **outputCommandList = nullptr;
+	void addMacros();
+	void editMacros(Macros macros);
 	QString outputKey;
 	int outputSize;
 
 signals:
 	void wasUpdated();
+	void deleteMacros(const QString &name);
+	void refreshCurrentMacroses();
 
 private slots:
 	void OkClicked();
 	void CancelClicked();
-	void keyStringChanged(const QString *key);
+	void keyStringChanged(const QString &key);
 	void modeChanged(const QString &mode);
-	void createCommandWidget();
+	void addCommandWidget();
 
 private:
+	void initialize();
 	void initializeExecutionModes();
+	void createCommandWidget(const QString &oldPath, const QString &oldType);
+	QString editingMacrosName;
 	Ui::AddingDialog *ui;
 	QVBoxLayout *inputLayout;
 	QVBoxLayout *macrosLayout;

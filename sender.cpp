@@ -15,6 +15,11 @@ void Sender::needMacroses()
 	mCurrentMacroses->showMacroses(mController->getMacroses());
 }
 
+void Sender::editMacros(const QString &macrosName)
+{
+	mDial->editMacros(mController->getMacroses()->value(macrosName));
+}
+
 void Sender::getAndSend()
 {
 	mController->makeMacros(mDial->outputKey, mDial->outputCommandList, mDial->outputSize);

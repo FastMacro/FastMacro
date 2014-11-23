@@ -1,5 +1,6 @@
 #include "currentmacrosesdialog.h"
 #include "ui_currentmacrosesdialog.h"
+#include "addingdialog.h"
 
 CurrentMacrosesDialog::CurrentMacrosesDialog(QWidget *parent) :
 	QDialog(parent),
@@ -30,6 +31,7 @@ void CurrentMacrosesDialog::closeEvent(QCloseEvent *event)
 
 void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros> *mMacroses)
 {
+	MacrosDestructor::clearLayout(macrosLayout);
 	mNumberOfMacroses = mMacroses->count();
 	mView->setText("You have " + QString::number(mNumberOfMacroses) + " macroses");
 
@@ -53,12 +55,18 @@ void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros> *mMacroses)
 
 		MacrosDestructor *mDestructor = new MacrosDestructor(editLine->text());
 		mDestructor->mLayout = layout;
+		MacrosUpdater *mUpdater = new MacrosUpdater(it.key(), this);
 		connect(deleteButton, SIGNAL(clicked()), mDestructor, SLOT(deleteMacros()));
-		connect(mDestructor, SIGNAL(wasUpdated(QString)), this, SIGNAL(wasUpdated(QString)));
+		connect(editButton, SIGNAL(clicked()), mUpdater, SLOT(updateMacros()));
 		connect(mDestructor, SIGNAL(wasUpdated(QString)), this, SLOT(recountNumber()));
 		macrosLayout->addLayout(layout);
 	}
 	show();
+}
+
+void CurrentMacrosesDialog::emitMacrosEdit(const QString &name)
+{
+	emit editMacros(name);
 }
 
 void CurrentMacrosesDialog::recountNumber()
@@ -89,10 +97,14 @@ void MacrosDestructor::clearLayout(QLayout *layout)
 	}
 }
 
-
 void MacrosDestructor::deleteMacros()
 {
 	clearLayout(mLayout);
 	delete mLayout;
 	emit wasUpdated(name);
+}
+
+void MacrosUpdater::updateMacros()
+{
+	dialog->emitMacrosEdit(name);
 }

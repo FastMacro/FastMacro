@@ -61,7 +61,7 @@ void AddingDialog::initialize()
 	QPushButton *addCommandButton = new QPushButton;
 	addCommandButton->setText("Add command");
 	ui->mainLayout->addWidget(addCommandButton);
-	connect(addCommandButton, SIGNAL(clicked()), this, SLOT(createCommandWidget()));
+	connect(addCommandButton, SIGNAL(clicked()), this, SLOT(addCommandWidget()));
 
 	buttonBox = new QDialogButtonBox;
 	buttonBox->addButton(QDialogButtonBox::Ok);
@@ -70,7 +70,25 @@ void AddingDialog::initialize()
 	connect(buttonBox, SIGNAL(accepted()), this, SLOT(OkClicked()));
 	connect(buttonBox, SIGNAL(rejected()), this, SLOT(CancelClicked()));
 	ui->mainLayout->addWidget(buttonBox);
+}
 
+void AddingDialog::addMacros()
+{
+	initialize();
+	editingMacrosName = "";
+	show();
+}
+
+void AddingDialog::editMacros(Macros macros) {
+	initialize();
+	selectExecutionMode->setCurrentText("Type key string");
+	modeChanged("Type key string");
+	keyString->setText(macros.getName());
+	keyStringChanged(macros.getName());
+	editingMacrosName = macros.getName();
+	Command **commands = macros.getCommandList().first;
+	for (int i = 0; i < macros.getCommandList().second; i++)
+		createCommandWidget(commands[i]->getType(), commands[i]->getPath());
 	show();
 }
 
@@ -82,6 +100,10 @@ void AddingDialog::initializeExecutionModes()
 	for (int i = 0; i < executionModes->size(); i++)
 		selectExecutionMode->addItem(executionModes->values().at(i));
 	connect(selectExecutionMode, SIGNAL(currentTextChanged(QString)), this, SLOT(modeChanged(QString)));
+}
+
+void AddingDialog::addCommandWidget() {
+	createCommandWidget("", "");
 }
 
 void AddingDialog::CancelClicked()
@@ -99,14 +121,18 @@ void AddingDialog::OkClicked()
 		outputCommandList[i] = Command::createCommand(command->getPath(), command->getType());
 	}
 	outputKey = keyString->text();
+	if (editingMacrosName != "")
+		emit deleteMacros(editingMacrosName);
 	emit wasUpdated();
+	if (editingMacrosName != "")
+		emit refreshCurrentMacroses();
 	clearLayout(macrosLayout);
 	close();
 }
 
-void AddingDialog::keyStringChanged(const QString *key)
+void AddingDialog::keyStringChanged(const QString &key)
 {
-	if (key->toStdString() == "") {
+	if (key.toStdString() == "") {
 		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 		return;
 	}
@@ -133,7 +159,7 @@ void AddingDialog::modeChanged(const QString &mode)
 	inputLayout->addWidget(keyString);
 }
 
-void AddingDialog::createCommandWidget()
+void AddingDialog::createCommandWidget(const QString &oldType, const QString &oldPath)
 {
 	QGridLayout *layout = new QGridLayout;
 	layout->setSpacing(5);
@@ -141,9 +167,11 @@ void AddingDialog::createCommandWidget()
 	QComboBox *box = new QComboBox;
 	for (int i = 0; i < Command::commandTypesNumber; i++)
 		box->addItem(Command::commandTypes[i]);
+	if (oldType != "")
+		box->setCurrentText(oldType);
 	layout->addWidget(box, 0, 0, 1, 4);
 
-	PreCommand *newCommand = new PreCommand("", box->currentText());
+	PreCommand *newCommand = new PreCommand(oldPath, box->currentText());
 	commandList->append(newCommand);
 
 	QPushButton *deleteButton = new QPushButton;
@@ -155,8 +183,8 @@ void AddingDialog::createCommandWidget()
 	destructor->commandList = commandList;
 
 	QLineEdit *path = new QLineEdit;
+	path->setText(oldPath);
 	layout->addWidget(path,	1, 0, 1, 5);
-
 
 	connect(path, SIGNAL(textChanged(QString)), newCommand, SLOT(updateCommandPath(QString)));
 	connect(box, SIGNAL(currentTextChanged(QString)), newCommand, SLOT(updateCommandType(QString)));

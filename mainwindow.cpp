@@ -14,7 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	mController->setConnection(mKeyFilter);
 	mSender = new Sender(mAd, mController, mCm);
 	connect(mAd, SIGNAL(wasUpdated()), mSender, SLOT(newMacrosWasCreated()));
+	connect(mAd, SIGNAL(deleteMacros(QString)), mSender, SLOT(deleteMacros(QString)));
+	connect(mAd, SIGNAL(refreshCurrentMacroses()), mSender, SLOT(needMacroses()));
 	connect(mCm, SIGNAL(wasUpdated(QString)), mSender, SLOT(deleteMacros(QString)));
+	connect(mCm, SIGNAL(editMacros(QString)), mSender, SLOT(editMacros(QString)));
 	connect(ui->checkBoxNo, SIGNAL(clicked()), this, SLOT(noWasClicked()));
 	connect(ui->checkBoxYes, SIGNAL(clicked()), this, SLOT(yesWasClicked()));
 	connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addWasClicked()));
@@ -47,7 +50,7 @@ void MainWindow::noWasClicked()
 
 void MainWindow::addWasClicked()
 {
-	mAd->initialize();
+	mAd->addMacros();
 }
 
 void MainWindow::currentWasClicked()

@@ -13,7 +13,7 @@ public slots:
 	void newMacrosWasCreated();
 	void deleteMacros(QString name);
 	void needMacroses();
-
+	void editMacros(const QString &macrosName);
 private:
 	void getAndSend();
 	AddingDialog *mDial;
