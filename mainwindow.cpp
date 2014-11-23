@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	mAd = new AddingDialog();
 	mCm = new CurrentMacrosesDialog();
 	mKeyFilter = KeyPressFilter::getInstance();
-	installEventFilter(mKeyFilter);
 	mController = new Controller();
 	mController->setConnection(mKeyFilter);
 	mSender = new Sender(mAd, mController, mCm);
@@ -36,7 +35,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::yesWasClicked()
 {
-	installEventFilter(mKeyFilter);
+	mKeyFilter->enable();
 	ui->checkBoxYes->setEnabled(false);
 	ui->checkBoxNo->setEnabled(true);
 	ui->checkBoxNo->setChecked(false);
@@ -44,7 +43,7 @@ void MainWindow::yesWasClicked()
 
 void MainWindow::noWasClicked()
 {
-	removeEventFilter(mKeyFilter);
+	mKeyFilter->disable();
 	ui->checkBoxNo->setEnabled(false);
 	ui->checkBoxYes->setEnabled(true);
 	ui->checkBoxYes->setChecked(false);
