@@ -11,7 +11,7 @@ class CommandLine : public QObject
 	Q_OBJECT
 
 public:
-	CommandLine(int size, QMap<QString, Macros> *macroses);
+	CommandLine(int size, QMap<QString, Macros *> *macroses);
 	void add(QChar &currentChar);
 
 public slots:
@@ -19,7 +19,7 @@ public slots:
 
 private:
 	void scan();
-	QMap<QString, Macros> *mMacros;
+	QMap<QString, Macros*> *mMacros;
 	QList<QChar> mList;
 	int mSize;
 };

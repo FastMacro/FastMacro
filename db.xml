@@ -1,0 +1,16 @@
+<FastMacroDatabase>
+<macros>
+	<name>CMD</name>
+	<command>
+		<type>System command</type>
+		<path>cmd</path>
+	</command>
+</macros>
+<macros>
+	<name>VK</name>
+	<command>
+		<type>Open webpage</type>
+		<path>http://vk.com/feed</path>
+	</command>
+</macros>
+</FastMacroDatabase>

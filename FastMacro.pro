@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,7 +25,8 @@ SOURCES += main.cpp\
     controller.cpp \
     sender.cpp \
     currentmacrosesdialog.cpp \
-    keypressfilter.cpp
+    keypressfilter.cpp \
+    macrosdatacontroller.cpp
 
 HEADERS  += mainwindow.h \
     commandline.h \
@@ -35,7 +37,8 @@ HEADERS  += mainwindow.h \
     command.h \
     controller.h \
     sender.h \
-    currentmacrosesdialog.h
+    currentmacrosesdialog.h \
+    macrosdatacontroller.h
 
 FORMS    += mainwindow.ui \
     addingdialog.ui \

@@ -22,7 +22,6 @@ public slots:
 	void yesWasClicked();
 	void noWasClicked();
 	void addWasClicked();
-	void currentWasClicked();
 
 private:
 	Ui::MainWindow *ui;

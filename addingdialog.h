@@ -23,7 +23,7 @@ public:
 	~AddingDialog();
 	Command **outputCommandList = nullptr;
 	void addMacros();
-	void editMacros(Macros macros);
+	void editMacros(Macros *macros);
 	QString outputKey;
 	int outputSize;
 
@@ -41,6 +41,7 @@ private slots:
 
 private:
 	void initialize();
+	QMap<QString, Macros> *load();
 	void initializeExecutionModes();
 	void createCommandWidget(const QString &oldPath, const QString &oldType);
 	QString editingMacrosName;

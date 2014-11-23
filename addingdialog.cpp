@@ -79,15 +79,15 @@ void AddingDialog::addMacros()
 	show();
 }
 
-void AddingDialog::editMacros(Macros macros) {
+void AddingDialog::editMacros(Macros *macros) {
 	initialize();
 	selectExecutionMode->setCurrentText("Type key string");
 	modeChanged("Type key string");
-	keyString->setText(macros.getName());
-	keyStringChanged(macros.getName());
-	editingMacrosName = macros.getName();
-	Command **commands = macros.getCommandList().first;
-	for (int i = 0; i < macros.getCommandList().second; i++)
+	keyString->setText(macros->getName());
+	keyStringChanged(macros->getName());
+	editingMacrosName = macros->getName();
+	Command **commands = macros->getCommandList().first;
+	for (int i = 0; i < macros->getCommandList().second; i++)
 		createCommandWidget(commands[i]->getType(), commands[i]->getPath());
 	show();
 }

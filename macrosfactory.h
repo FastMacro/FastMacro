@@ -10,10 +10,10 @@ class MacrosFactory : public QObject
 	Q_OBJECT
 
 public:
-	MacrosFactory(QMap<QString, Macros> *macroses);
+	MacrosFactory(QMap<QString, Macros*> *macroses);
 	~MacrosFactory();
 	void makeMacros(const QString &key, Command **commands, int size);
 
 private:
-	QMap<QString, Macros> * mMacros;
+	QMap<QString, Macros*> * mMacros;
 };

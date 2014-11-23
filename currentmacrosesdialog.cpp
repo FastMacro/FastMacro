@@ -29,13 +29,13 @@ void CurrentMacrosesDialog::closeEvent(QCloseEvent *event)
 	event->accept();
 }
 
-void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros> *mMacroses)
+void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros*> *mMacroses)
 {
 	MacrosDestructor::clearLayout(macrosLayout);
 	mNumberOfMacroses = mMacroses->count();
 	mView->setText("You have " + QString::number(mNumberOfMacroses) + " macroses");
 
-	for (QMap<QString, Macros>::iterator it = mMacroses->begin(); it != mMacroses->end(); ++it) {
+	for (QMap<QString, Macros*>::iterator it = mMacroses->begin(); it != mMacroses->end(); ++it) {
 
 		QGridLayout *layout = new QGridLayout;
 		layout->setSpacing(5);
@@ -58,7 +58,7 @@ void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros> *mMacroses)
 		MacrosUpdater *mUpdater = new MacrosUpdater(it.key(), this);
 		connect(deleteButton, SIGNAL(clicked()), mDestructor, SLOT(deleteMacros()));
 		connect(editButton, SIGNAL(clicked()), mUpdater, SLOT(updateMacros()));
-		connect(mDestructor, SIGNAL(wasUpdated(QString)), this, SLOT(recountNumber()));
+		connect(mDestructor, SIGNAL(wasDeleted(QString)), this, SLOT(wasDeleted(QString)));
 		macrosLayout->addLayout(layout);
 	}
 	show();
@@ -69,7 +69,7 @@ void CurrentMacrosesDialog::emitMacrosEdit(const QString &name)
 	emit editMacros(name);
 }
 
-void CurrentMacrosesDialog::recountNumber()
+void CurrentMacrosesDialog::wasDeleted(const QString &macrosName)
 {
 	mNumberOfMacroses--;
 	QString text;
@@ -80,6 +80,7 @@ void CurrentMacrosesDialog::recountNumber()
 	else
 		text = "You have " + QString::number(mNumberOfMacroses) + " macroses";
 	mView->setText(text);
+	emit deleteMacros(macrosName);
 }
 
 void MacrosDestructor::clearLayout(QLayout *layout)
@@ -101,7 +102,7 @@ void MacrosDestructor::deleteMacros()
 {
 	clearLayout(mLayout);
 	delete mLayout;
-	emit wasUpdated(name);
+	emit wasDeleted(name);
 }
 
 void MacrosUpdater::updateMacros()
