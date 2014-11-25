@@ -22,15 +22,15 @@ class CurrentMacrosesDialog : public QDialog
 public:
 	explicit CurrentMacrosesDialog(QWidget *parent = 0);
 	~CurrentMacrosesDialog();
-	void showMacroses(QMap<QString, Macros> *macroses);
+	void showMacroses(QMap<QString, Macros *> *macroses);
 	void emitMacrosEdit(const QString &name);
 
 signals:
-	void wasUpdated(QString);
+	void deleteMacros(QString);
 	void editMacros(QString);
 
 public slots:
-	void recountNumber();
+	void wasDeleted(const QString &name);
 
 private:
 	void closeEvent(QCloseEvent* event);
@@ -49,8 +49,7 @@ class MacrosDestructor : public QObject {
 		QLayout *mLayout;
 
 	signals:
-		void wasUpdated(QString);
-		void editMacros(QString);
+		void wasDeleted(QString);
 
 	public slots:
 		void deleteMacros();

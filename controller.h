@@ -6,6 +6,7 @@
 #include "macros.h"
 #include "macrosfactory.h"
 #include "keypressfilter.h"
+#include "macrosdatacontroller.h"
 
 class Controller : public QObject
 {
@@ -16,11 +17,12 @@ public:
 	void makeMacros(QString key, Command **commands, int size);
 	void setConnection(KeyPressFilter *keyFilter);
 	void deleteMacros(const QString &name);
-	QMap<QString, Macros> * getMacroses();
+	QMap<QString, Macros*> *getMacroses();
 
 private:
 	CommandLine *mCommandLine;
-	QMap<QString, Macros> *mMacros;
+	QMap<QString, Macros*> *mMacros;
 	MacrosFactory *mFactory;
-	int mSize = 10;
+	MacrosDataController *mMacrosDataController;
+	int mSize = 30;
 };

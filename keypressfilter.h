@@ -28,6 +28,14 @@ public:
 		keystate[keycode] = GetKeyState(keycode);
 	}
 
+	void enable() {
+		enabled = true;
+	}
+
+	void disable() {
+		enabled = false;
+	}
+
 	static LRESULT CALLBACK MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam);
 
     ~KeyPressFilter() {}
@@ -43,7 +51,8 @@ private:
 		}
 	}
 	void emitThrow(QChar symbol) {
-		emit throwChar(symbol);
+		if (enabled)
+			emit throwChar(symbol);
 	}
 
    // void setupEventHook(FREContext iCtx);
@@ -51,6 +60,7 @@ private:
 	HHOOK hHook;
     HHOOK hHookFocus;
 	static KeyPressFilter *instance;
+	bool enabled = true;
 
 signals:
 	void throwChar(QChar key);

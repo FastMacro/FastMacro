@@ -28,7 +28,6 @@ public slots:
 	void yesWasClicked();
 	void noWasClicked();
 	void addWasClicked();
-	void currentWasClicked();
 
 private slots:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);

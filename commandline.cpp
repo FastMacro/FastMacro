@@ -1,6 +1,6 @@
 #include "commandline.h"
 
-CommandLine::CommandLine(int size, QMap<QString, Macros> *macroses)
+CommandLine::CommandLine(int size, QMap<QString, Macros*> *macroses)
 	: mSize(size), mMacros(macroses)
 {
 }
@@ -24,7 +24,7 @@ void CommandLine::scan()
 		if (mMacros->contains(curStr))
 		{
 			/// Если нашли - запустили
-			(*mMacros)[curStr].exec();
+			mMacros->value(curStr)->exec();
 			mList.clear();
 			break;
 		}
