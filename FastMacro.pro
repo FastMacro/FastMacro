@@ -40,3 +40,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     addingdialog.ui \
     currentmacrosesdialog.ui
+
+RESOURCES += \
+    systray.qrc

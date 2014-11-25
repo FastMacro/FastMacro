@@ -3,9 +3,30 @@
 KeyPressFilter *KeyPressFilter::instance = 0;
 
 LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam) {
-	if(wParam == WM_KEYDOWN)
+    if(wParam == WM_KEYDOWN)
 	{
-		qDebug() << "Key Pressed!";
+
+        GUITHREADINFO threadInfo;
+        threadInfo.cbSize = sizeof(GUITHREADINFO);
+        DWORD tid = GetWindowThreadProcessId(GetActiveWindow(),0);
+        GetGUIThreadInfo(tid,&threadInfo);
+        HWND focus = threadInfo.hwndFocus;
+
+        if(threadInfo.flags & GUI_CARETBLINKING)
+            {
+
+                qDebug() << "ASD";
+            //text field focus
+            }
+
+
+      /*  GUITHREADINFO info;
+        char buff[256];
+        info.cbSize = sizeof(GUITHREADINFO);
+
+        GetGUIThreadInfo(GetCurrentThreadId(), &info);
+*/
+        qDebug() << "Key Pressed!";
 
 		//Get the key information
 		KBDLLHOOKSTRUCT cKey = *((KBDLLHOOKSTRUCT*)lParam);
@@ -38,3 +59,32 @@ LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam
 
 	return CallNextHookEx(getInstance()->hHook, nCode, wParam, lParam);
 }
+/*
+void KeyPressFilter::setupEventHook(FREContext iCtx)
+{
+    ctx = iCtx;
+    CoInitialize(NULL);
+
+    evHook = SetWinEventHook(EVENT_OBJECT_FOCUS, EVENT_OBJECT_END, NULL,
+    handleEventObjectFocus, 0, 0,
+    WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS);
+
+}
+*/
+/*
+BOOL handleEventObjectFocus(DWORD thread)
+ {
+    GUITHREADINFO threadInfo;
+    threadInfo.cbSize = sizeof(GUITHREADINFO);
+
+    BOOL result = GetGUIThreadInfo(thread, &threadInfo);
+
+
+    if(threadInfo.flags & GUI_CARETBLINKING)
+    {
+        qDebug() << "YEEEES";
+    }
+
+    return result;
+}
+*/

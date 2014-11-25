@@ -29,13 +29,15 @@ public:
 	}
 
 	static LRESULT CALLBACK MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam);
-	~KeyPressFilter() {}
+
+    ~KeyPressFilter() {}
 
 private:
 	KeyPressFilter()
 	{
 		hHook = SetWindowsHookEx(WH_KEYBOARD_LL, MyLowLevelKeyBoardProc, NULL, 0);
-		if(hHook == NULL)
+      //  hHookFocus = SetWindowsHookExA(WH_KEYBOARD_LL, handleEventObjectFocus, NULL, 0);
+        if(hHook == NULL)
 		{
 			qDebug() << "Hook failed";
 		}
@@ -44,7 +46,10 @@ private:
 		emit throwChar(symbol);
 	}
 
+   // void setupEventHook(FREContext iCtx);
+
 	HHOOK hHook;
+    HHOOK hHookFocus;
 	static KeyPressFilter *instance;
 
 signals:
