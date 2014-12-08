@@ -11,31 +11,13 @@ public:
 	QPair<Command **, int> getCommandList();
 	void exec();
 	QString getName();
-	virtual QString getType() = 0;
+	QString getType();
+	QString getKeystring();
 	static Macros* createMacros(MacrosOutputHolder *holder);
 private:
 	Command **commandList = nullptr;
 	int commandListSize = 0;
 	QString name;
+	QString keystring;
 	QString type;
-};
-
-class KeyStringMacros : public Macros
-{
-public:
-	KeyStringMacros(MacrosOutputHolder *holder);
-	QString getKeyString();
-	QString getType();
-private:
-	QString keyString;
-};
-
-class ShortcutMacros : public Macros
-{
-public:
-	ShortcutMacros(MacrosOutputHolder *holder);
-	QSet<QString> *getKeys();
-	QString getType();
-private:
-	QSet<QString> *keys;
 };

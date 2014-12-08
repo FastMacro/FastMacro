@@ -3,25 +3,21 @@
 Controller::Controller()
 {
 	mMacrosDataController = new MacrosDataController;
-	mKeystringMacros = mMacrosDataController->load();
-	mCommandLine = new CommandLine(mSize, mKeystringMacros, mShortcutMacros);
+	mMacros = mMacrosDataController->load();
+	mCommandLine = new CommandLine(mSize, mMacros);
 	mFactory = new MacrosFactory(mMacros);
 }
 
 Controller::~Controller()
 {
-	delete mKeystringMacros;
+	delete mMacros;
 	delete mCommandLine;
 	delete mFactory;
 }
 
-QMap<QString, Macros*> * Controller::getKeystringMacroses()
+QMap<QString, Macros*> * Controller::getMacroses()
 {
 	return mMacros;
-}
-
-QMap<QSet, Macros*> * Controller::getShortcutMacroses() {
-
 }
 
 void Controller::makeMacros(MacrosOutputHolder *holder)
@@ -37,6 +33,11 @@ void Controller::setConnection(KeyPressFilter *keyFilter)
 
 void Controller::deleteMacros(const QString &name)
 {
-	mMacros->remove(name);
+	for (QMap<QString, Macros*>::iterator it = mMacros->begin(); it != mMacros->end(); ++it) {
+		if (it.value()->getName() == name) {
+			mMacros->erase(it);
+			break;
+		}
+	}
 	mMacrosDataController->save(mMacros);
 }

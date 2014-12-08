@@ -41,7 +41,7 @@ void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros*> *mMacroses)
 		layout->setSpacing(5);
 
 		QLineEdit *editLine = new QLineEdit;
-		editLine->setText(it.key());
+		editLine->setText(it.value()->getName());
 		editLine->setReadOnly(true);
 		layout->addWidget(editLine, 0, 0, 1, 3);
 
@@ -55,7 +55,7 @@ void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros*> *mMacroses)
 
 		MacrosDestructor *mDestructor = new MacrosDestructor(editLine->text());
 		mDestructor->mLayout = layout;
-		MacrosUpdater *mUpdater = new MacrosUpdater(it.key(), this);
+		MacrosUpdater *mUpdater = new MacrosUpdater(it.value()->getName(), this);
 		connect(deleteButton, SIGNAL(clicked()), mDestructor, SLOT(deleteMacros()));
 		connect(editButton, SIGNAL(clicked()), mUpdater, SLOT(updateMacros()));
 		connect(mDestructor, SIGNAL(wasDeleted(QString)), this, SLOT(wasDeleted(QString)));

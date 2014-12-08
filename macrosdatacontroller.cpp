@@ -27,13 +27,7 @@ void MacrosDataController::save(QMap<QString, Macros*> *macroses)
 		QString type = i.value()->getType();
 		out << "	<type>" << type << "</type>" << endl;
 
-		if (type == "keystring")
-			out << "	<keystring>" << dynamic_cast<KeyStringMacros*>(i.value())->getKeyString() << "</keystring>" << endl;
-		if (type == "shortcut") {
-			out << "	<keys>" << endl;
-			foreach (const QString &value, *dynamic_cast<ShortcutMacros*>(i.value())->getKeys())
-				out << "		<key>" << value << "</key>" << endl;
-		}
+		out << "	<keystring>" << i.value()->getKeystring() << "</keystring>" << endl;
 
 		int size = i.value()->getCommandList().second;
 
@@ -111,8 +105,8 @@ Macros* MacrosDataController::parseMacros(QDomNode docElem)
 			name = element.text();
 		if (element.tagName() == "keystring")
 			keyString = element.text();
-		if (element.tagName() == "keys")
-			keys = parseKeys(element);
+		if (element.tagName() == "shortcut")
+			keyString = element.text();
 		if (element.tagName() == "type")
 			type = element.text();
 		if (element.tagName() == "command")
@@ -123,12 +117,12 @@ Macros* MacrosDataController::parseMacros(QDomNode docElem)
 		node = node.nextSibling();
 	}
 
-	return Macros::createMacros(new MacrosOutputHolder(name, type, commandList, i, keyString, keys));
+	return new Macros(new MacrosOutputHolder(name, type, commandList, i, keyString));
 }
 
-QMap<QString, Macros*> *MacrosDataController::load()
+QMap<QString, Macros*>* MacrosDataController::load()
 {
-	QMap<QString, Macros*> *loadedMacroses = new QMap<QString, Macros*>;
+	QMap<QString, Macros*> *macroses = new QMap<QString, Macros*>;
 
 	QDomDocument doc("mydocument");
 	QFile file("db.xml");
@@ -143,9 +137,9 @@ QMap<QString, Macros*> *MacrosDataController::load()
 	while(!node.isNull())
 	{
 		Macros *newMacros = parseMacros(node);
-		if (newMacros)
-			loadedMacroses->insert(newMacros->getName(), newMacros);
+		macroses->insert(newMacros->getKeystring(), newMacros);
 		node = node.nextSibling();
 	}
-	return loadedMacroses;
+
+	return macroses;
 }

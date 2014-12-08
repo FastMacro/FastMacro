@@ -6,7 +6,6 @@
 #include <QFile>
 #include <QTextStream>
 #include <QtXml/QDomDocument>
-
 #include "commandline.h"
 #include "macros.h"
 #include "command.h"
@@ -21,7 +20,8 @@ public:
 	~MacrosDataController();
 
 	void save(QMap<QString, Macros*> *macroses);
-	QMap<QString, Macros*> *load();
+	QMap<QString, Macros *> *load();
+
 private:
 	Command *parseCommand(QDomNode docElem);
 	Macros *parseMacros(QDomNode docElem);

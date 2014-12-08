@@ -18,13 +18,11 @@ public:
 	void makeMacros(MacrosOutputHolder *holder);
 	void setConnection(KeyPressFilter *keyFilter);
 	void deleteMacros(const QString &name);
-	QMap<QString, Macros*> *getKeystringMacroses();
-	QMap<QSet, Macros*> *getShortcutMacroses();
+	QMap<QString, Macros*> *getMacroses();
 
 private:
 	CommandLine *mCommandLine;
-	QMap<QString, Macros*> *mKeystringMacros;
-	QMap<QSet, Macros*> *mShortcutMacros;
+	QMap<QString, Macros*> *mMacros;
 	MacrosFactory *mFactory;
 	MacrosDataController *mMacrosDataController;
 	int mSize = 30;

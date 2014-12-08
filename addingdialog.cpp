@@ -89,10 +89,9 @@ void AddingDialog::addMacros()
 
 void AddingDialog::editMacros(Macros *macros) {
 	initialize();
-	selectExecutionMode->setCurrentText("Type key string");
-	modeChanged("Type key string");
-	keyString->setText(macros->getName());
-	keyStringChanged(macros->getName());
+	selectExecutionMode->setCurrentText(executionModes->value(macros->getType()));
+	macrosName->setText(macros->getName());
+	keyString->setText(macros->getKeystring());
 	editingMacrosName = macros->getName();
 	Command **commands = macros->getCommandList().first;
 	for (int i = 0; i < macros->getCommandList().second; i++)
@@ -133,9 +132,9 @@ void AddingDialog::OkClicked()
 	QString name = macrosName->text();
 
 	if (selectExecutionMode->currentText() == executionModes->value("keystring"))
-		holder = new MacrosOutputHolder(name, "keystring", outputCommandList, outputSize, keyString->text(), nullptr);
+		holder = new MacrosOutputHolder(name, "keystring", outputCommandList, outputSize, keyString->text());
 	else if (selectExecutionMode->currentText() == executionModes->value("shortcut"))
-		holder = new MacrosOutputHolder(name, "shortcut",  outputCommandList, outputSize, "", nullptr);
+		holder = new MacrosOutputHolder(name, "shortcut",  outputCommandList, outputSize, "");
 
 	if (editingMacrosName != "")
 		emit deleteMacros(editingMacrosName);

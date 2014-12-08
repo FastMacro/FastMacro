@@ -21,12 +21,7 @@ int MacrosOutputHolder::getCommandListSize()
 	return commandListSize;
 }
 
-QString MacrosOutputHolder::getPath()
+QString MacrosOutputHolder::getKeystring()
 {
-	return path;
-}
-
-QSet<QString> *MacrosOutputHolder::getKeys()
-{
-	return keys;
+	return keystring;
 }

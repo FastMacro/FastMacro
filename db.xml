@@ -2,19 +2,19 @@
 <macros>
 	<name>MyMacros</name>
 	<type>keystring</type>
-	<keystring>master</keystring>
+	<keystring>MASTER</keystring>
 	<command>
 		<type>Open webpage</type>
-		<path>https://vk.com/feed</path>
+		<path>https://vk.com/feed?section=updates</path>
 	</command>
 </macros>
 <macros>
-	<name>mail</name>
+	<name>ololo</name>
 	<type>keystring</type>
-	<keystring>faculty</keystring>
+	<keystring>POKS</keystring>
 	<command>
 		<type>Open webpage</type>
-		<path>https://e.mail.ru/messages/inbox/</path>
+		<path>https://vk.com/saimon_saret</path>
 	</command>
 </macros>
 </FastMacroDatabase>

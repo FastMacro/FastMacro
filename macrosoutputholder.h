@@ -3,19 +3,17 @@
 
 class MacrosOutputHolder {
 public:
-	MacrosOutputHolder(const QString &newName, const QString &newType, Command **newList, int newListSize, const QString &newPath, QSet<QString> *newKeys)
-		: name(newName), type(newType), commandList(newList), commandListSize(newListSize), path(newPath), keys(newKeys) {}
+	MacrosOutputHolder(const QString &newName, const QString &newType, Command **newList, int newListSize, const QString &newKeystring)
+		: name(newName), type(newType), commandList(newList), commandListSize(newListSize), keystring(newKeystring.toUpper()) {}
 	QString getName();
 	QString getType();
 	Command** getCommandList();
 	int getCommandListSize();
-	QString getPath();
-	QSet<QString>* getKeys();
+	QString getKeystring();
 private:
 	QString name;
 	QString type;
 	Command **commandList;
 	int commandListSize;
-	QString path;
-	QSet<QString> *keys;
+	QString keystring;
 };
