@@ -41,6 +41,14 @@ void AddingDialog::initialize()
 	ui->mainLayout->setSpacing(50);
 	ui->mainLayout->addWidget(new QLabel("Macros Constructor"));
 
+	QVBoxLayout *nameLayout =  new QVBoxLayout;
+	ui->mainLayout->addLayout(nameLayout, 1);
+	nameLayout->setSpacing(20);
+
+	nameLayout->addWidget(new QLabel("Type macros name:"));
+	macrosName = new QLineEdit;
+	nameLayout->addWidget(macrosName);
+
 	QVBoxLayout *modeLayout = new QVBoxLayout;
 	ui->mainLayout->addLayout(modeLayout, 1);
 	modeLayout->setSpacing(20);
@@ -81,10 +89,9 @@ void AddingDialog::addMacros()
 
 void AddingDialog::editMacros(Macros *macros) {
 	initialize();
-	selectExecutionMode->setCurrentText("Type key string");
-	modeChanged("Type key string");
-	keyString->setText(macros->getName());
-	keyStringChanged(macros->getName());
+	selectExecutionMode->setCurrentText(executionModes->value(macros->getType()));
+	macrosName->setText(macros->getName());
+	keyString->setText(macros->getKeystring());
 	editingMacrosName = macros->getName();
 	Command **commands = macros->getCommandList().first;
 	for (int i = 0; i < macros->getCommandList().second; i++)
@@ -95,10 +102,12 @@ void AddingDialog::editMacros(Macros *macros) {
 void AddingDialog::initializeExecutionModes()
 {
 	executionModes = new QMap<QString, QString>();
+	executionModes->insert("keystring", "Type key string");
 	executionModes->insert("none", "Not selected");
-	executionModes->insert("type", "Type key string");
-	for (int i = 0; i < executionModes->size(); i++)
-		selectExecutionMode->addItem(executionModes->values().at(i));
+	executionModes->insert("shortcut", "Use shortcut");
+	foreach (const QString &value, *executionModes)
+		selectExecutionMode->addItem(value);
+	selectExecutionMode->setCurrentText(executionModes->value("none"));
 	connect(selectExecutionMode, SIGNAL(currentTextChanged(QString)), this, SLOT(modeChanged(QString)));
 }
 
@@ -114,13 +123,19 @@ void AddingDialog::CancelClicked()
 
 void AddingDialog::OkClicked()
 {
-	outputSize = commandList->count();
-	outputCommandList = new Command*[outputSize];
+	int outputSize = commandList->count();
+	Command **outputCommandList = new Command*[outputSize];
 	for (int i = 0; i < outputSize; i++) {
 		PreCommand *command = commandList->at(i);
 		outputCommandList[i] = Command::createCommand(command->getPath(), command->getType());
 	}
-	outputKey = keyString->text();
+	QString name = macrosName->text();
+
+	if (selectExecutionMode->currentText() == executionModes->value("keystring"))
+		holder = new MacrosOutputHolder(name, "keystring", outputCommandList, outputSize, keyString->text());
+	else if (selectExecutionMode->currentText() == executionModes->value("shortcut"))
+		holder = new MacrosOutputHolder(name, "shortcut",  outputCommandList, outputSize, "");
+
 	if (editingMacrosName != "")
 		emit deleteMacros(editingMacrosName);
 	emit wasUpdated();

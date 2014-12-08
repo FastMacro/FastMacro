@@ -7,11 +7,11 @@ class Sender : public QObject
 {
 	Q_OBJECT
 public:
-	Sender(AddingDialog *mDial, Controller *mController, CurrentMacrosesDialog *mCurrnet);
+	Sender(AddingDialog *mDial, Controller *mController, CurrentMacrosesDialog *mCurrent);
 
 public slots:
 	void newMacrosWasCreated();
-	void deleteMacros(QString name);
+	void deleteMacros(const QString &name);
 	void needMacroses();
 	void editMacros(const QString &macrosName);
 private:

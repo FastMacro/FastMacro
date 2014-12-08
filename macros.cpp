@@ -2,19 +2,13 @@
 #include <QDebug>
 #include <string>
 
-Macros::Macros(const QString &macrosName, Command *command)
+Macros::Macros(MacrosOutputHolder *holder)
 {
-	commandList = new Command*[1];
-	commandList[0] = command;
-	commandListSize = 1;
-	name = macrosName;
-}
-
-Macros::Macros(const QString &macrosName, Command **commands, int size)
-{
-	commandList = commands;
-	commandListSize = size;
-	name = macrosName;
+	commandList = holder->getCommandList();
+	commandListSize = holder->getCommandListSize();
+	name = holder->getName();
+	type = holder->getType();
+	keystring = holder->getKeystring();
 }
 
 void Macros::exec()
@@ -26,6 +20,15 @@ void Macros::exec()
 QString Macros::getName()
 {
 	return name;
+}
+
+QString Macros::getType() {
+	return type;
+}
+
+QString Macros::getKeystring()
+{
+	return keystring;
 }
 
 QPair<Command **, int> Macros::getCommandList()

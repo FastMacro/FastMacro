@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QDebug>
 #include "macros.h"
+#include "macrosoutputholder.h"
 
 class MacrosFactory : public QObject
 {
@@ -12,7 +13,7 @@ class MacrosFactory : public QObject
 public:
 	MacrosFactory(QMap<QString, Macros*> *macroses);
 	~MacrosFactory();
-	void makeMacros(const QString &key, Command **commands, int size);
+	void makeMacros(MacrosOutputHolder *holder);
 
 private:
 	QMap<QString, Macros*> * mMacros;

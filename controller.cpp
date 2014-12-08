@@ -20,9 +20,9 @@ QMap<QString, Macros*> * Controller::getMacroses()
 	return mMacros;
 }
 
-void Controller::makeMacros(QString key, Command **commands, int size)
+void Controller::makeMacros(MacrosOutputHolder *holder)
 {
-	mFactory->makeMacros(key, commands, size);
+	mFactory->makeMacros(holder);
 	mMacrosDataController->save(mMacros);
 }
 
@@ -33,6 +33,11 @@ void Controller::setConnection(KeyPressFilter *keyFilter)
 
 void Controller::deleteMacros(const QString &name)
 {
-	mMacros->remove(name);
+	for (QMap<QString, Macros*>::iterator it = mMacros->begin(); it != mMacros->end(); ++it) {
+		if (it.value()->getName() == name) {
+			mMacros->erase(it);
+			break;
+		}
+	}
 	mMacrosDataController->save(mMacros);
 }

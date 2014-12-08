@@ -9,7 +9,7 @@ MacrosFactory::~MacrosFactory()
 {
 }
 
-void MacrosFactory::makeMacros(const QString &key, Command **commands, int size)
+void MacrosFactory::makeMacros(MacrosOutputHolder *holder)
 {
-	mMacros->insert(key.toUpper(), new Macros(key, commands, size));
+	mMacros->insert(holder->getKeystring(), new Macros(holder));
 }

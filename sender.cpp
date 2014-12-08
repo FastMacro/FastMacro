@@ -1,7 +1,7 @@
 #include "sender.h"
 
-Sender::Sender(AddingDialog *mDial, Controller *mController, CurrentMacrosesDialog *mCurrnet)
-	: mDial(mDial), mController(mController), mCurrentMacroses(mCurrnet)
+Sender::Sender(AddingDialog *mDial, Controller *mController, CurrentMacrosesDialog *mCurrent)
+	: mDial(mDial), mController(mController), mCurrentMacroses(mCurrent)
 {
 }
 
@@ -17,15 +17,20 @@ void Sender::needMacroses()
 
 void Sender::editMacros(const QString &macrosName)
 {
-	mDial->editMacros(mController->getMacroses()->value(macrosName));
+	QMap<QString, Macros*> *macroses = mController->getMacroses();
+	foreach (Macros *value, *macroses)
+		if (value->getName() == macrosName) {
+			mDial->editMacros(value);
+			return;
+		}
 }
 
 void Sender::getAndSend()
 {
-	mController->makeMacros(mDial->outputKey, mDial->outputCommandList, mDial->outputSize);
+	mController->makeMacros(mDial->holder);
 }
 
-void Sender::deleteMacros(QString name)
+void Sender::deleteMacros(const QString &name)
 {
 	mController->deleteMacros(name);
 }

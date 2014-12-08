@@ -22,7 +22,12 @@ void MacrosDataController::save(QMap<QString, Macros*> *macroses)
 	{
 		out << "<macros>"<< endl;
 
-		out << "	<name>" << i.key() << "</name>" << endl;
+		out << "	<name>" << i.value()->getName() << "</name>" << endl;
+
+		QString type = i.value()->getType();
+		out << "	<type>" << type << "</type>" << endl;
+
+		out << "	<keystring>" << i.value()->getKeystring() << "</keystring>" << endl;
 
 		int size = i.value()->getCommandList().second;
 
@@ -62,6 +67,24 @@ Command* MacrosDataController::parseCommand(QDomNode docElem)
 	return Command::createCommand(path, type);
 }
 
+QSet<QString>* MacrosDataController::parseKeys(QDomNode docElem) {
+	if(docElem.isNull())
+		return nullptr;
+
+	QDomNode node = docElem.firstChild();
+	QSet<QString> *set = new QSet<QString>;
+
+	while(!node.isNull())
+	{
+		QDomElement element = node.toElement();
+		if(element.tagName() == "key")
+			set->insert(element.text());
+		node = node.nextSibling();
+	}
+
+	return set;
+}
+
 Macros* MacrosDataController::parseMacros(QDomNode docElem)
 {
 	if(docElem.isNull())
@@ -69,15 +92,24 @@ Macros* MacrosDataController::parseMacros(QDomNode docElem)
 	QDomNode node = docElem.firstChild();
 
 	QString name = "";
+	QString type = "";
+	QString keyString = "";
+	QSet<QString> *keys = nullptr;
 	Command** commandList = new Command*[docElem.childNodes().size() - 1];
 	int i = 0;
 
 	while(!node.isNull())
 	{
 		QDomElement element = node.toElement();
-		if(element.tagName() == "name")
+		if (element.tagName() == "name")
 			name = element.text();
-		if(element.tagName() == "command")
+		if (element.tagName() == "keystring")
+			keyString = element.text();
+		if (element.tagName() == "shortcut")
+			keyString = element.text();
+		if (element.tagName() == "type")
+			type = element.text();
+		if (element.tagName() == "command")
 		{
 			commandList[i] = parseCommand(element);
 			i++;
@@ -85,12 +117,12 @@ Macros* MacrosDataController::parseMacros(QDomNode docElem)
 		node = node.nextSibling();
 	}
 
-	return new Macros(name, commandList, i);
+	return new Macros(new MacrosOutputHolder(name, type, commandList, i, keyString));
 }
 
-QMap<QString, Macros*> *MacrosDataController::load()
+QMap<QString, Macros*>* MacrosDataController::load()
 {
-	QMap<QString, Macros*> *loadedMacroses = new QMap<QString, Macros*>;
+	QMap<QString, Macros*> *macroses = new QMap<QString, Macros*>;
 
 	QDomDocument doc("mydocument");
 	QFile file("db.xml");
@@ -105,9 +137,9 @@ QMap<QString, Macros*> *MacrosDataController::load()
 	while(!node.isNull())
 	{
 		Macros *newMacros = parseMacros(node);
-		if (newMacros)
-			loadedMacroses->insert(newMacros->getName(), newMacros);
+		macroses->insert(newMacros->getKeystring(), newMacros);
 		node = node.nextSibling();
 	}
-	return loadedMacroses;
+
+	return macroses;
 }
