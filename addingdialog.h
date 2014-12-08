@@ -9,6 +9,7 @@
 #include <QList>
 #include <macros.h>
 #include "command.h"
+#include "macrosoutputholder.h"
 
 namespace Ui {
 class AddingDialog;
@@ -21,11 +22,9 @@ class AddingDialog : public QDialog
 public:
 	explicit AddingDialog(QWidget *parent = 0);
 	~AddingDialog();
-	Command **outputCommandList = nullptr;
 	void addMacros();
 	void editMacros(Macros *macros);
-	QString outputKey;
-	int outputSize;
+	MacrosOutputHolder *holder;
 
 signals:
 	void wasUpdated();
@@ -46,6 +45,7 @@ private:
 	void createCommandWidget(const QString &oldPath, const QString &oldType);
 	QString editingMacrosName;
 	Ui::AddingDialog *ui;
+	QLineEdit *macrosName;
 	QVBoxLayout *inputLayout;
 	QVBoxLayout *macrosLayout;
 	QLineEdit *keyString;

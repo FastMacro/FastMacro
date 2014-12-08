@@ -43,6 +43,7 @@ public:
 private:
 	KeyPressFilter()
 	{
+		pressedKeys = new QSet<QString>;
 		hHook = SetWindowsHookEx(WH_KEYBOARD_LL, MyLowLevelKeyBoardProc, NULL, 0);
       //  hHookFocus = SetWindowsHookExA(WH_KEYBOARD_LL, handleEventObjectFocus, NULL, 0);
         if(hHook == NULL)
@@ -60,6 +61,7 @@ private:
 	HHOOK hHook;
     HHOOK hHookFocus;
 	static KeyPressFilter *instance;
+	QSet<QString> *pressedKeys;
 	bool enabled = true;
 
 signals:

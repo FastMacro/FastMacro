@@ -22,7 +22,7 @@ void Sender::editMacros(const QString &macrosName)
 
 void Sender::getAndSend()
 {
-	mController->makeMacros(mDial->outputKey, mDial->outputCommandList, mDial->outputSize);
+	mController->makeMacros(mDial->holder);
 }
 
 void Sender::deleteMacros(QString name)

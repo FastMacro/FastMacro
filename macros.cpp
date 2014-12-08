@@ -2,19 +2,12 @@
 #include <QDebug>
 #include <string>
 
-Macros::Macros(const QString &macrosName, Command *command)
+Macros::Macros(MacrosOutputHolder *holder)
 {
-	commandList = new Command*[1];
-	commandList[0] = command;
-	commandListSize = 1;
-	name = macrosName;
-}
-
-Macros::Macros(const QString &macrosName, Command **commands, int size)
-{
-	commandList = commands;
-	commandListSize = size;
-	name = macrosName;
+	commandList = holder->getCommandList();
+	commandListSize = holder->getCommandListSize();
+	name = holder->getName();
+	type = holder->getType();
 }
 
 void Macros::exec()
@@ -32,4 +25,37 @@ QPair<Command **, int> Macros::getCommandList()
 {
 	QPair<Command **, int> cPair(commandList, commandListSize);
 	return cPair;
+}
+
+Macros* Macros::createMacros(MacrosOutputHolder *holder) {
+	Macros *newMacros = nullptr;
+	if (holder->getType() == "keystring")
+		newMacros = new KeyStringMacros(holder);
+	else if (holder->getType() == "shortcut")
+		newMacros = new ShortcutMacros(holder);
+	return newMacros;
+}
+
+KeyStringMacros::KeyStringMacros(MacrosOutputHolder *holder) : Macros(holder) {
+	keyString = holder->getPath();
+}
+
+QString KeyStringMacros::getKeyString() {
+	return keyString;
+}
+
+QString KeyStringMacros::getType() {
+	return "keystring";
+}
+
+ShortcutMacros::ShortcutMacros(MacrosOutputHolder *holder) : Macros(holder) {
+	keys = holder->getKeys();
+}
+
+QSet<QString> *ShortcutMacros::getKeys() {
+	return keys;
+}
+
+QString ShortcutMacros::getType() {
+	return "shortcut";
 }

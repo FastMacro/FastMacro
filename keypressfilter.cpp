@@ -3,30 +3,18 @@
 KeyPressFilter *KeyPressFilter::instance = 0;
 
 LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam) {
-    if(wParam == WM_KEYDOWN)
+	if(wParam == WM_KEYDOWN || wParam == WM_KEYUP)
 	{
+		GUITHREADINFO threadInfo;
+		threadInfo.cbSize = sizeof(GUITHREADINFO);
+		DWORD tid = GetWindowThreadProcessId(GetActiveWindow(),0);
+		GetGUIThreadInfo(tid,&threadInfo);
+		HWND focus = threadInfo.hwndFocus;
 
-        GUITHREADINFO threadInfo;
-        threadInfo.cbSize = sizeof(GUITHREADINFO);
-        DWORD tid = GetWindowThreadProcessId(GetActiveWindow(),0);
-        GetGUIThreadInfo(tid,&threadInfo);
-        HWND focus = threadInfo.hwndFocus;
-
-        if(threadInfo.flags & GUI_CARETBLINKING)
-            {
-
-                qDebug() << "ASD";
-            //text field focus
-            }
-
-
-      /*  GUITHREADINFO info;
-        char buff[256];
-        info.cbSize = sizeof(GUITHREADINFO);
-
-        GetGUIThreadInfo(GetCurrentThreadId(), &info);
-*/
-        qDebug() << "Key Pressed!";
+		if (wParam == WM_KEYDOWN)
+			qDebug() << "Key Pressed!";
+		else
+			qDebug() << "Key Unpressed!";
 
 		//Get the key information
 		KBDLLHOOKSTRUCT cKey = *((KBDLLHOOKSTRUCT*)lParam);
@@ -53,8 +41,15 @@ LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam
 		int result = ToUnicodeEx(cKey.vkCode, cKey.scanCode, keyboard_state, buffer, 4, 0, keyboard_layout);
 		buffer[4] = L'\0';
 
-		qDebug() << "key:" << cKey.vkCode << " " << QString::fromUtf16((ushort*)buffer) << " " <<  QString::fromUtf16((ushort*)lpszName);
-		getInstance()->emitThrow(static_cast<char>(cKey.vkCode));
+		QString keyName = QString::fromUtf16((ushort*)lpszName);
+
+		qDebug() << "key:" << cKey.vkCode << " " << keyName;
+		if (wParam == WM_KEYDOWN) {
+			getInstance()->pressedKeys->insert(keyName);
+			getInstance()->emitThrow(static_cast<char>(cKey.vkCode));
+		} else {
+			getInstance()->pressedKeys->remove(keyName);
+		}
 	}
 
 	return CallNextHookEx(getInstance()->hHook, nCode, wParam, lParam);

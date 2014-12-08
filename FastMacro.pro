@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     sender.cpp \
     currentmacrosesdialog.cpp \
     keypressfilter.cpp \
-    macrosdatacontroller.cpp
+    macrosdatacontroller.cpp \
+    macrosoutputholder.cpp
 
 HEADERS  += mainwindow.h \
     commandline.h \
@@ -38,7 +39,8 @@ HEADERS  += mainwindow.h \
     controller.h \
     sender.h \
     currentmacrosesdialog.h \
-    macrosdatacontroller.h
+    macrosdatacontroller.h \
+    macrosoutputholder.h
 
 FORMS    += mainwindow.ui \
     addingdialog.ui \

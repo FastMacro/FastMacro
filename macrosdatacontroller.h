@@ -25,4 +25,5 @@ public:
 private:
 	Command *parseCommand(QDomNode docElem);
 	Macros *parseMacros(QDomNode docElem);
+	QSet<QString> *parseKeys(QDomNode docElem);
 };

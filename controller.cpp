@@ -3,26 +3,30 @@
 Controller::Controller()
 {
 	mMacrosDataController = new MacrosDataController;
-	mMacros = mMacrosDataController->load();
-	mCommandLine = new CommandLine(mSize, mMacros);
+	mKeystringMacros = mMacrosDataController->load();
+	mCommandLine = new CommandLine(mSize, mKeystringMacros, mShortcutMacros);
 	mFactory = new MacrosFactory(mMacros);
 }
 
 Controller::~Controller()
 {
-	delete mMacros;
+	delete mKeystringMacros;
 	delete mCommandLine;
 	delete mFactory;
 }
 
-QMap<QString, Macros*> * Controller::getMacroses()
+QMap<QString, Macros*> * Controller::getKeystringMacroses()
 {
 	return mMacros;
 }
 
-void Controller::makeMacros(QString key, Command **commands, int size)
+QMap<QSet, Macros*> * Controller::getShortcutMacroses() {
+
+}
+
+void Controller::makeMacros(MacrosOutputHolder *holder)
 {
-	mFactory->makeMacros(key, commands, size);
+	mFactory->makeMacros(holder);
 	mMacrosDataController->save(mMacros);
 }
 

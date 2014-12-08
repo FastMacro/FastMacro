@@ -1,16 +1,20 @@
 <FastMacroDatabase>
 <macros>
-	<name>CMD</name>
+	<name>MyMacros</name>
+	<type>keystring</type>
+	<keystring>master</keystring>
 	<command>
-		<type>System command</type>
-		<path>cmd</path>
+		<type>Open webpage</type>
+		<path>https://vk.com/feed</path>
 	</command>
 </macros>
 <macros>
-	<name>VK</name>
+	<name>mail</name>
+	<type>keystring</type>
+	<keystring>faculty</keystring>
 	<command>
 		<type>Open webpage</type>
-		<path>http://vk.com/feed</path>
+		<path>https://e.mail.ru/messages/inbox/</path>
 	</command>
 </macros>
 </FastMacroDatabase>
