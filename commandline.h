@@ -19,6 +19,7 @@ public slots:
 
 private:
 	void scan();
+	void scanShortcut();
 	QMap<QString, Macros*> *mMacros;
 	QList<QChar> mList;
 	int mSize;

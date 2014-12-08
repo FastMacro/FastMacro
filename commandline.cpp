@@ -1,4 +1,6 @@
 #include "commandline.h"
+#include "keypressfilter.h"
+#include "keysetconverter.h"
 
 CommandLine::CommandLine(int size, QMap<QString, Macros*> *macroses)
 	: mSize(size), mMacros(macroses)
@@ -33,8 +35,27 @@ void CommandLine::scan()
 	}
 }
 
+void CommandLine::scanShortcut()
+{
+	QSet<QString> *pressedKeys = KeyPressFilter::getInstance()->getPressedKeys();
+
+	QMap<QString, Macros*>::iterator i;
+	for (i = mMacros->begin(); i != mMacros->end(); ++i) {
+		if (i.key()[0] != '#')
+			continue;
+		QSet<QString> *macrosSet = KeySetConverter::getInstance()->toSet(i.key());
+		if (*macrosSet == *pressedKeys) {
+			delete macrosSet;
+			i.value()->exec();
+			break;
+		}
+		delete macrosSet;
+	}
+}
+
 void CommandLine::catchChar(QChar key)
 {
 	qDebug() << "CommandLine : char : " <<  key;
 	add(key);
+	scanShortcut();
 }

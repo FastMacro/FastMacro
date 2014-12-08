@@ -1,6 +1,7 @@
 #include "macros.h"
 #include <QDebug>
 #include <string>
+#include "keysetconverter.h"
 
 Macros::Macros(MacrosOutputHolder *holder)
 {
@@ -8,7 +9,15 @@ Macros::Macros(MacrosOutputHolder *holder)
 	commandListSize = holder->getCommandListSize();
 	name = holder->getName();
 	type = holder->getType();
-	keystring = holder->getKeystring();
+	if (type == "keystring" || !holder->getKeyset())
+		keystring = holder->getKeystring();
+	else if (type == "shortcut")
+		keystring = KeySetConverter::getInstance()->toString(holder->getKeyset());
+}
+
+Macros::~Macros()
+{
+	delete commandList;
 }
 
 void Macros::exec()

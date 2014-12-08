@@ -8,6 +8,7 @@ class Macros
 {
 public:
 	Macros(MacrosOutputHolder *holder);
+	~Macros();
 	QPair<Command **, int> getCommandList();
 	void exec();
 	QString getName();

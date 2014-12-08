@@ -26,15 +26,18 @@ LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam
 		UpdateKeyState(keyboard_state, VK_MENU);
 
 		char lpszName[0x100] = {0};
-
+		DWORD dwMsg = 1;
+		dwMsg += cKey.scanCode << 16;
+		dwMsg += cKey.flags << 24;
+		GetKeyNameText(dwMsg, (LPTSTR)lpszName, 255);
 		QString keyName = QString::fromUtf16((ushort*)lpszName);
 
 		qDebug() << "key:" << cKey.vkCode << " " << keyName;
 		if (wParam == WM_KEYDOWN) {
-			getInstance()->pressedKeys->insert(keyName);
+			getInstance()->pressedKeys->insert(keyName.toUpper());
 			getInstance()->emitThrow(static_cast<char>(cKey.vkCode));
 		} else {
-			getInstance()->pressedKeys->remove(keyName);
+			getInstance()->pressedKeys->remove(keyName.toUpper());
 		}
 	}
 	return CallNextHookEx(getInstance()->hHook, nCode, wParam, lParam);

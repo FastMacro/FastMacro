@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <QDialogButtonBox>
 #include <QList>
+#include <QLabel>
 #include <macros.h>
 #include "command.h"
 #include "macrosoutputholder.h"
@@ -37,6 +38,7 @@ private slots:
 	void keyStringChanged(const QString &key);
 	void modeChanged(const QString &mode);
 	void addCommandWidget();
+	void recordShortcut();
 
 private:
 	void initialize();
@@ -49,10 +51,12 @@ private:
 	QVBoxLayout *inputLayout;
 	QVBoxLayout *macrosLayout;
 	QLineEdit *keyString;
+	QLabel *shortcutLabel;
 	QComboBox *selectExecutionMode;
 	QDialogButtonBox *buttonBox;
 	QMap<QString, QString> *executionModes;
 	QList<PreCommand*> *commandList;
+	QSet<QString> *shortcutKeys = nullptr;
 };
 
 class CommandDestructor : public QObject {

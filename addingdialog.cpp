@@ -1,6 +1,7 @@
 #include "addingdialog.h"
 #include "ui_addingdialog.h"
-#include <QLabel>
+#include "keypressfilter.h"
+#include "keysetconverter.h"
 #include <QPushButton>
 #include <QLineEdit>
 
@@ -15,6 +16,7 @@ void clearLayout(QLayout *layout)
 			delete item;
 			continue;
 		}
+
 		delete item->widget();
 	}
 }
@@ -90,8 +92,17 @@ void AddingDialog::addMacros()
 void AddingDialog::editMacros(Macros *macros) {
 	initialize();
 	selectExecutionMode->setCurrentText(executionModes->value(macros->getType()));
+	if (macros->getType() == "keystring") {
+		keyString->setText(macros->getKeystring());
+	}
+	if (macros->getType() == "shortcut") {
+		QString text = "Currently selected keys:";
+		shortcutKeys = KeySetConverter::getInstance()->toSet(macros->getKeystring());
+		foreach (const QString &value, *shortcutKeys)
+			text += " " + value + " ";
+		shortcutLabel->setText(text);
+	}
 	macrosName->setText(macros->getName());
-	keyString->setText(macros->getKeystring());
 	editingMacrosName = macros->getName();
 	Command **commands = macros->getCommandList().first;
 	for (int i = 0; i < macros->getCommandList().second; i++)
@@ -132,15 +143,18 @@ void AddingDialog::OkClicked()
 	QString name = macrosName->text();
 
 	if (selectExecutionMode->currentText() == executionModes->value("keystring"))
-		holder = new MacrosOutputHolder(name, "keystring", outputCommandList, outputSize, keyString->text());
-	else if (selectExecutionMode->currentText() == executionModes->value("shortcut"))
-		holder = new MacrosOutputHolder(name, "shortcut",  outputCommandList, outputSize, "");
+		holder = new MacrosOutputHolder(name, "keystring", outputCommandList, outputSize, keyString->text(), nullptr);
+	else if (selectExecutionMode->currentText() == executionModes->value("shortcut")) {
+		holder = new MacrosOutputHolder(name, "shortcut",  outputCommandList, outputSize, "", shortcutKeys);
+	}
+	shortcutKeys = nullptr;
 
 	if (editingMacrosName != "")
 		emit deleteMacros(editingMacrosName);
 	emit wasUpdated();
 	if (editingMacrosName != "")
 		emit refreshCurrentMacroses();
+	delete holder;
 	clearLayout(macrosLayout);
 	close();
 }
@@ -167,11 +181,37 @@ void AddingDialog::modeChanged(const QString &mode)
 	}
 	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 
-	QLabel *inputLabel = new QLabel("Enter key string:");
-	inputLayout->addWidget(inputLabel);
+	if (executionModes->value("keystring") == mode) {
+		QLabel *inputLabel = new QLabel("Enter key string:");
+		inputLayout->addWidget(inputLabel);
+		keyString = new QLineEdit;
+		inputLayout->addWidget(keyString);
+		return;
+	}
 
-	keyString = new QLineEdit;
-	inputLayout->addWidget(keyString);
+	if (executionModes->value("shortcut") == mode) {
+		QHBoxLayout *upperLayout = new QHBoxLayout;
+		QLabel *inputLabel = new QLabel("Press keys you want to use in shortcut:");
+		QPushButton *recordButton = new QPushButton("OK");
+		upperLayout->addWidget(inputLabel);
+		upperLayout->addWidget(recordButton);
+		shortcutLabel = new QLabel("Currently selected keys:");
+		inputLayout->addLayout(upperLayout);
+		inputLayout->addWidget(shortcutLabel);
+		connect(recordButton, SIGNAL(clicked()), this, SLOT(recordShortcut()));
+	}
+}
+
+void AddingDialog::recordShortcut()
+{
+	QSet<QString> *pressedKeys = KeyPressFilter::getInstance()->getPressedKeys();
+	QString text = "Currently selected keys:";
+	foreach (const QString &value, *pressedKeys)
+		text += " " + value + " ";
+	shortcutLabel->setText(text);
+	if (shortcutKeys)
+		delete shortcutKeys;
+	shortcutKeys = new QSet<QString>(*pressedKeys);
 }
 
 void AddingDialog::createCommandWidget(const QString &oldType, const QString &oldPath)

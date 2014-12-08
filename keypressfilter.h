@@ -23,6 +23,10 @@ public:
 		return instance;
 	}
 
+	QSet<QString> *getPressedKeys() {
+		return pressedKeys;
+	}
+
 	static void UpdateKeyState(BYTE *keystate, int keycode)
 	{
 		keystate[keycode] = GetKeyState(keycode);

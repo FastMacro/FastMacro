@@ -1,5 +1,9 @@
 #include "macrosoutputholder.h"
 
+MacrosOutputHolder::~MacrosOutputHolder()
+{
+	delete keyset;
+}
 
 QString MacrosOutputHolder::getName()
 {
@@ -24,4 +28,9 @@ int MacrosOutputHolder::getCommandListSize()
 QString MacrosOutputHolder::getKeystring()
 {
 	return keystring;
+}
+
+QSet<QString>* MacrosOutputHolder::getKeyset()
+{
+	return keyset;
 }

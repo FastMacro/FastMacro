@@ -1,4 +1,5 @@
 #include "macrosdatacontroller.h"
+#include "keysetconverter.h"
 
 MacrosDataController::MacrosDataController()
 {
@@ -94,7 +95,6 @@ Macros* MacrosDataController::parseMacros(QDomNode docElem)
 	QString name = "";
 	QString type = "";
 	QString keyString = "";
-	QSet<QString> *keys = nullptr;
 	Command** commandList = new Command*[docElem.childNodes().size() - 1];
 	int i = 0;
 
@@ -117,7 +117,7 @@ Macros* MacrosDataController::parseMacros(QDomNode docElem)
 		node = node.nextSibling();
 	}
 
-	return new Macros(new MacrosOutputHolder(name, type, commandList, i, keyString));
+	return new Macros(new MacrosOutputHolder(name, type, commandList, i, keyString, nullptr));
 }
 
 QMap<QString, Macros*>* MacrosDataController::load()
