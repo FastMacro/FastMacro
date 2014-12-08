@@ -8,7 +8,34 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
 {
-	ui->setupUi(this);
+	ui->setupUi(this); 
+    mAd = new AddingDialog();
+	mCm = new CurrentMacrosesDialog();
+	mKeyFilter = KeyPressFilter::getInstance();
+	mController = new Controller();
+    mController->setConnection(mKeyFilter);
+    mSender = new Sender(mAd, mController, mCm);
+
+    startTrayIcon();
+    setConnections();
+}
+
+MainWindow::~MainWindow()
+{
+	delete ui;
+	delete mKeyFilter;
+	delete mController;
+    delete minimizeAction;
+    delete quitAction;
+    delete trayIcon;
+    delete trayIconMenu;
+    delete mSender;
+    delete mAd;
+    delete mCm;
+}
+
+void MainWindow::startTrayIcon()
+{
     minimizeAction = new QAction(tr("Show"), this);
     connect(minimizeAction, SIGNAL(triggered()), this, SLOT(showNormal()));
     quitAction = new QAction(tr("&Quit"), this);
@@ -19,29 +46,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                  this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     trayIcon->show();
-
-    mAd = new AddingDialog();
-	mCm = new CurrentMacrosesDialog();
-	mKeyFilter = KeyPressFilter::getInstance();
-	mController = new Controller();
-	mController->setConnection(mKeyFilter);
-	mSender = new Sender(mAd, mController, mCm);
-	connect(mAd, SIGNAL(wasUpdated()), mSender, SLOT(newMacrosWasCreated()));
-	connect(mAd, SIGNAL(deleteMacros(QString)), mSender, SLOT(deleteMacros(QString)));
-	connect(mAd, SIGNAL(refreshCurrentMacroses()), mSender, SLOT(needMacroses()));
-	connect(mCm, SIGNAL(deleteMacros(QString)), mSender, SLOT(deleteMacros(QString)));
-	connect(mCm, SIGNAL(editMacros(QString)), mSender, SLOT(editMacros(QString)));
-	connect(ui->checkBoxNo, SIGNAL(clicked()), this, SLOT(noWasClicked()));
-	connect(ui->checkBoxYes, SIGNAL(clicked()), this, SLOT(yesWasClicked()));
-	connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addWasClicked()));
-	connect(ui->currentButton, SIGNAL(clicked()), mSender, SLOT(needMacroses()));
 }
 
-MainWindow::~MainWindow()
+void MainWindow::setConnections()
 {
-	delete ui;
-	delete mKeyFilter;
-	delete mController;
+    connect(mAd, SIGNAL(wasUpdated()), mSender, SLOT(newMacrosWasCreated()));
+    connect(mAd, SIGNAL(deleteMacros(QString)), mSender, SLOT(deleteMacros(QString)));
+    connect(mAd, SIGNAL(refreshCurrentMacroses()), mSender, SLOT(needMacroses()));
+    connect(mCm, SIGNAL(deleteMacros(QString)), mSender, SLOT(deleteMacros(QString)));
+    connect(mCm, SIGNAL(editMacros(QString)), mSender, SLOT(editMacros(QString)));
+    connect(ui->checkBoxNo, SIGNAL(clicked()), this, SLOT(noWasClicked()));
+    connect(ui->checkBoxYes, SIGNAL(clicked()), this, SLOT(yesWasClicked()));
+    connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addWasClicked()));
+    connect(ui->currentButton, SIGNAL(clicked()), mSender, SLOT(needMacroses()));
 }
 
 void MainWindow::yesWasClicked()
@@ -68,11 +85,6 @@ void MainWindow::addWasClicked()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if (trayIcon->isVisible()) {
-        QMessageBox::information(this, tr("Systray"),
-                              tr("The program will keep running in the "
-                                 "system tray. To terminate the program, "
-                                 "choose <b>Quit</b> in the context menu "
-                                 "of the system tray entry."));
         hide();
         event->ignore();
     }
@@ -80,8 +92,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::setIcon()
 {
-    QIcon icon(":/images/trash.svg");
-    trayIcon->setIcon(icon);
+    QIcon icon(":/images/fastMacroIcon2.svg");
     setWindowIcon(icon);
     trayIcon->setIcon(icon);
 }

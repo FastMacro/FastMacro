@@ -22,11 +22,15 @@ public:
 	~MainWindow();
 
 protected:
+    /// What is happening when you click to exit button
     void closeEvent(QCloseEvent *);
 
 public slots:
+    /// start scanning user's text mode
 	void yesWasClicked();
+    /// finish scanning user's text mode
 	void noWasClicked();
+    /// open the window of adding new macros
 	void addWasClicked();
 
 private slots:
@@ -35,6 +39,8 @@ private slots:
 private:
     void setIcon();
     void createTrayIcon();
+    void startTrayIcon();
+    void setConnections();
     QAction *minimizeAction;
     QAction *quitAction;
     QSystemTrayIcon *trayIcon;

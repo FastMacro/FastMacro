@@ -60,7 +60,7 @@ private:
 	HHOOK hHook;
     HHOOK hHookFocus;
 	static KeyPressFilter *instance;
-	bool enabled = true;
+    static bool enabled;
 
 signals:
 	void throwChar(QChar key);
