@@ -44,109 +44,109 @@ public:
 		enabled = false;
 	}
 
-    void mouseUp() {
-        mousePressed = false;
-    }
+	void mouseUp() {
+		mousePressed = false;
+	}
 
-    void mouseDown() {
-        mousePressed = true;
-    }
+	void mouseDown() {
+		mousePressed = true;
+	}
 
-    static LRESULT CALLBACK MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam);
-    static LRESULT CALLBACK MyLowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK MyLowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam);
 
-    ~KeyPressFilter() {}
+	~KeyPressFilter() {}
 
 private:
 	KeyPressFilter()
 	{
 		pressedKeys = new QSet<QString>;
 
-        hHook = SetWindowsHookEx(WH_KEYBOARD_LL, MyLowLevelKeyBoardProc, NULL, 0);
-        hHookMouse = SetWindowsHookEx(WH_MOUSE_LL, MyLowLevelMouseProc, NULL, 0);
+		hHook = SetWindowsHookEx(WH_KEYBOARD_LL, MyLowLevelKeyBoardProc, NULL, 0);
+		hHookMouse = SetWindowsHookEx(WH_MOUSE_LL, MyLowLevelMouseProc, NULL, 0);
 
-        if(hHook == NULL)
-        {
-            qDebug() << "Hook failed";
-        }
-        if(hHookMouse == NULL)
-        {
-            qDebug() << "Hook failed";
-        }
+		if(hHook == NULL)
+		{
+			qDebug() << "Hook failed";
+		}
+		if(hHookMouse == NULL)
+		{
+			qDebug() << "Hook failed";
+		}
 	}
 
-    int levenshtein_distance(const QVector < QPair<int, int> > & src, const QVector < QPair<int, int> > & dst)
-    {
-        int m = src.size();
-        int n = dst.size();
+	int levenshtein_distance(const QVector < QPair<int, int> > & src, const QVector < QPair<int, int> > & dst)
+	{
+		int m = src.size();
+		int n = dst.size();
 
-        if (m == 0)
-        {
-            return n;
-        }
-        if (n == 0)
-        {
-            return m;
-        }
+		if (m == 0)
+		{
+			return n;
+		}
+		if (n == 0)
+		{
+			return m;
+		}
 
-        std::vector< std::vector<int> > matrixForDynamic(m + 1);
+		std::vector< std::vector<int> > matrixForDynamic(m + 1);
 
-        for (int i = 0; i <= m; ++i)
-        {
-            matrixForDynamic[i].resize(n + 1);
-            matrixForDynamic[i][0] = i;
-        }
-        for (int i = 0; i <= n; ++i)
-        {
-            matrixForDynamic[0][i] = i;
-        }
+		for (int i = 0; i <= m; ++i)
+		{
+			matrixForDynamic[i].resize(n + 1);
+			matrixForDynamic[i][0] = i;
+		}
+		for (int i = 0; i <= n; ++i)
+		{
+			matrixForDynamic[0][i] = i;
+		}
 
-        int above_cell, left_cell, diagonal_cell, cost;
+		int above_cell, left_cell, diagonal_cell, cost;
 
-        for (int i = 1; i <= m; ++i)
-        {
-            for(int j = 1; j <= n; ++j)
-            {
-                cost = src[i - 1] == dst[j - 1] ? 0 : 1;
-                above_cell = matrixForDynamic[i - 1][j];
-                left_cell = matrixForDynamic[i][j - 1];
-                diagonal_cell = matrixForDynamic[i - 1][j - 1];
-                matrixForDynamic[i][j] = std::min(std::min(above_cell + 1, left_cell + 1), diagonal_cell + cost);
-            }
-        }
+		for (int i = 1; i <= m; ++i)
+		{
+			for(int j = 1; j <= n; ++j)
+			{
+				cost = src[i - 1] == dst[j - 1] ? 0 : 1;
+				above_cell = matrixForDynamic[i - 1][j];
+				left_cell = matrixForDynamic[i][j - 1];
+				diagonal_cell = matrixForDynamic[i - 1][j - 1];
+				matrixForDynamic[i][j] = std::min(std::min(above_cell + 1, left_cell + 1), diagonal_cell + cost);
+			}
+		}
 
-        return matrixForDynamic[m][n];
-    }
+		return matrixForDynamic[m][n];
+	}
 
 	void emitThrow(QChar symbol) {
 		if (enabled)
 			emit throwChar(symbol);
 	}
 
-    HHOOK hHookMouse = NULL;
-    HHOOK hHook = NULL;
+	HHOOK hHookMouse = NULL;
+	HHOOK hHook = NULL;
 
-    void addPoint(float pointX, float pointY);
-    void clearMatrix();
-    void findMacros();
+	void addPoint(float pointX, float pointY);
+	void clearMatrix();
+	void findMacros();
 
-    bool vectorEquals(const QVector<QPair<int, int> > &v1, const QVector<QPair<int, int> > &v2);
+	bool vectorEquals(const QVector<QPair<int, int> > &v1, const QVector<QPair<int, int> > &v2);
 
-    HHOOK hHookFocus;
+	HHOOK hHookFocus;
 	static KeyPressFilter *instance;
 	bool enabled;
-    bool mousePressed;
-    int mapOfGestures[MAP_SIZE][MAP_SIZE];
+	bool mousePressed;
+	int mapOfGestures[MAP_SIZE][MAP_SIZE];
 
-    float minX;
-    float minY;
-    float maxX;
-    float maxY;
+	float minX;
+	float minY;
+	float maxX;
+	float maxY;
 
-    QSet<QString> *pressedKeys;
-    QVector < QPair<float, float> > allPoints;
-    QVector < QPair<int, int> > keyVector;
-    QVector < QPair<int, int> > tempVector;
+	QSet<QString> *pressedKeys;
+	QVector < QPair<float, float> > allPoints;
+	QVector < QPair<int, int> > keyVector;
+	QVector < QPair<int, int> > tempVector;
 
 signals:
 	void throwChar(QChar key);
