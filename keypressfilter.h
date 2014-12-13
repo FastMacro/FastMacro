@@ -31,11 +31,6 @@ public:
 		return pressedKeys;
 	}
 
-	static void UpdateKeyState(BYTE *keystate, int keycode)
-	{
-		keystate[keycode] = GetKeyState(keycode);
-	}
-
 	void enable() {
 		enabled = true;
 	}
@@ -55,12 +50,14 @@ public:
 	static LRESULT CALLBACK MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK MyLowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam);
 
-	~KeyPressFilter() {}
+	~KeyPressFilter();
 
 private:
 	KeyPressFilter()
 	{
 		pressedKeys = new QSet<QString>;
+		enabled = true;
+		mousePressed = false;
 
 		hHook = SetWindowsHookEx(WH_KEYBOARD_LL, MyLowLevelKeyBoardProc, NULL, 0);
 		hHookMouse = SetWindowsHookEx(WH_MOUSE_LL, MyLowLevelMouseProc, NULL, 0);
@@ -75,7 +72,12 @@ private:
 		}
 	}
 
-	int levenshtein_distance(const QVector < QPair<int, int> > & src, const QVector < QPair<int, int> > & dst)
+	static void UpdateKeyState(BYTE *keystate, int keycode)
+	{
+		keystate[keycode] = GetKeyState(keycode);
+	}
+
+	int levenshteinDistance(const QVector < QPair<int, int> > & src, const QVector < QPair<int, int> > & dst)
 	{
 		int m = src.size();
 		int n = dst.size();
@@ -118,9 +120,14 @@ private:
 		return matrixForDynamic[m][n];
 	}
 
-	void emitThrow(QChar symbol) {
+	void emitKeyThrow(QChar symbol) {
 		if (enabled)
 			emit throwChar(symbol);
+	}
+
+	void emitMouseThrow() {
+		if (enabled)
+			emit throwMouseEvent();
 	}
 
 	HHOOK hHookMouse = NULL;
@@ -150,4 +157,5 @@ private:
 
 signals:
 	void throwChar(QChar key);
+	void throwMouseEvent();
 };

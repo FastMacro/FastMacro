@@ -9,7 +9,7 @@ Macros::Macros(MacrosOutputHolder *holder)
 	commandListSize = holder->getCommandListSize();
 	name = holder->getName();
 	type = holder->getType();
-	if (type == "keystring" || !holder->getKeyset())
+	if (!holder->getKeyset())
 		keystring = holder->getKeystring();
 	else if (type == "shortcut")
 		keystring = KeySetConverter::getInstance()->toString(holder->getKeyset());

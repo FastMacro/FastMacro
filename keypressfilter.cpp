@@ -3,6 +3,13 @@
 
 KeyPressFilter *KeyPressFilter::instance = 0;
 
+KeyPressFilter::~KeyPressFilter()
+{
+	enabled = false;
+	delete pressedKeys;
+	instance = nullptr;
+}
+
 void KeyPressFilter::addPoint(float x, float y)
 {
 	minX = std::min(x, minX);
@@ -29,7 +36,7 @@ void KeyPressFilter::clearMatrix()
 
 bool KeyPressFilter::vectorEquals(const QVector < QPair<int, int> > & v1, const QVector < QPair<int, int> > & v2)
 {
-	return(min(v1.size(), v2.size()) >= 10 * levenshtein_distance(v1, v2));
+	return(min(v1.size(), v2.size()) >= 1 * levenshteinDistance(v1, v2));
 }
 
 void KeyPressFilter::findMacros()
@@ -91,18 +98,7 @@ void KeyPressFilter::findMacros()
 
 	if(vectorEquals(tempVector, keyVector))
 	{
-		std::cerr << "Macros" << std::endl;
-	}
-
-	//--------------
-
-	for(int j = 0; j < 10; j++)
-	{
-		for(int i = 0; i < 10; i++)
-		{
-			std::cerr << mapOfGestures[i][j] << " ";
-		}
-		qDebug();
+		KeyPressFilter::getInstance()->emitMouseThrow();
 	}
 }
 
@@ -117,7 +113,7 @@ LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam
 		if (wParam == WM_KEYDOWN)
 			qDebug() << "Key Pressed!";
 		else
-			qDebug() << "Ksey Unpressed!";
+			qDebug() << "Key Unpressed!";
 
 		//Get the key information
 		KBDLLHOOKSTRUCT cKey = *((KBDLLHOOKSTRUCT*)lParam);
@@ -139,7 +135,7 @@ LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam
 		qDebug() << "key:" << cKey.vkCode << " " << keyName;
 		if (wParam == WM_KEYDOWN) {
 			getInstance()->pressedKeys->insert(keyName.toUpper());
-			getInstance()->emitThrow(static_cast<char>(cKey.vkCode));
+			getInstance()->emitKeyThrow(static_cast<char>(cKey.vkCode));
 		} else {
 			getInstance()->pressedKeys->remove(keyName.toUpper());
 		}
@@ -149,7 +145,9 @@ LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam
 
 LRESULT CALLBACK KeyPressFilter::MyLowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-	if(wParam == WM_LBUTTONDOWN)
+
+
+	if(wParam == WM_LBUTTONDOWN && getInstance()->enabled)
 	{
 		getInstance()->clearMatrix();
 		qDebug() << "Mouse Pressed!";
@@ -173,7 +171,7 @@ LRESULT CALLBACK KeyPressFilter::MyLowLevelMouseProc(int nCode, WPARAM wParam, L
 		getInstance()->findMacros();
 	}
 
-	if(wParam == WM_MOUSEMOVE && getInstance()->mousePressed)
+	if(wParam == WM_MOUSEMOVE && getInstance()->mousePressed && getInstance()->enabled)
 	{
 		qDebug() << "Mouse Moved!";
 

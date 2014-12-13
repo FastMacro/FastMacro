@@ -59,3 +59,13 @@ void CommandLine::catchChar(QChar key)
 	add(key);
 	scanShortcut();
 }
+
+void CommandLine::catchMouseEvent()
+{
+	QMap<QString, Macros*>::iterator i;
+	for (i = mMacros->begin(); i != mMacros->end(); ++i)
+	{
+		if (i.key() == "$HORIZONTALLINE")
+			i.value()->exec();
+	}
+}

@@ -58,7 +58,6 @@ void AddingDialog::initialize()
 	modeLayout->addWidget(new QLabel("Select macros execution type:"));
 	selectExecutionMode = new QComboBox();
 	modeLayout->addWidget(selectExecutionMode);
-	initializeExecutionModes();
 
 	inputLayout = new QVBoxLayout;
 	ui->mainLayout->addLayout(inputLayout);
@@ -80,6 +79,7 @@ void AddingDialog::initialize()
 	connect(buttonBox, SIGNAL(accepted()), this, SLOT(OkClicked()));
 	connect(buttonBox, SIGNAL(rejected()), this, SLOT(CancelClicked()));
 	ui->mainLayout->addWidget(buttonBox);
+	initializeExecutionModes();
 }
 
 void AddingDialog::addMacros()
@@ -92,6 +92,7 @@ void AddingDialog::addMacros()
 void AddingDialog::editMacros(Macros *macros) {
 	initialize();
 	selectExecutionMode->setCurrentText(executionModes->value(macros->getType()));
+	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 	if (macros->getType() == "keystring") {
 		keyString->setText(macros->getKeystring());
 	}
@@ -114,11 +115,12 @@ void AddingDialog::initializeExecutionModes()
 {
 	executionModes = new QMap<QString, QString>();
 	executionModes->insert("keystring", "Type key string");
-	executionModes->insert("none", "Not selected");
 	executionModes->insert("shortcut", "Use shortcut");
+	executionModes->insert("mouse", "Use mouse gestures");
 	foreach (const QString &value, *executionModes)
 		selectExecutionMode->addItem(value);
-	selectExecutionMode->setCurrentText(executionModes->value("none"));
+	selectExecutionMode->setCurrentText(executionModes->value("keystring"));
+	modeChanged(executionModes->value("keystring"));
 	connect(selectExecutionMode, SIGNAL(currentTextChanged(QString)), this, SLOT(modeChanged(QString)));
 }
 
@@ -146,7 +148,8 @@ void AddingDialog::OkClicked()
 		holder = new MacrosOutputHolder(name, "keystring", outputCommandList, outputSize, keyString->text(), nullptr);
 	else if (selectExecutionMode->currentText() == executionModes->value("shortcut")) {
 		holder = new MacrosOutputHolder(name, "shortcut",  outputCommandList, outputSize, "", shortcutKeys);
-	}
+	} else if (selectExecutionMode->currentText() == executionModes->value("mouse"))
+		holder = new MacrosOutputHolder(name, "mouse",  outputCommandList, outputSize, "$horizontalLine", nullptr);
 	shortcutKeys = nullptr;
 
 	if (editingMacrosName != "")
@@ -165,27 +168,20 @@ void AddingDialog::keyStringChanged(const QString &key)
 		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 		return;
 	}
-	if (executionModes->value("none") == selectExecutionMode->currentText()) {
-		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-		return;
-	}
 	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
 void AddingDialog::modeChanged(const QString &mode)
 {
 	clearLayout(inputLayout);
-	if (executionModes->value("none") == mode) {
-		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-		return;
-	}
-	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	if (executionModes->value("keystring") == mode) {
 		QLabel *inputLabel = new QLabel("Enter key string:");
 		inputLayout->addWidget(inputLabel);
 		keyString = new QLineEdit;
 		inputLayout->addWidget(keyString);
+		connect(keyString, SIGNAL(textChanged(QString)), this, SLOT(keyStringChanged(QString)));
 		return;
 	}
 
@@ -199,12 +195,23 @@ void AddingDialog::modeChanged(const QString &mode)
 		inputLayout->addLayout(upperLayout);
 		inputLayout->addWidget(shortcutLabel);
 		connect(recordButton, SIGNAL(clicked()), this, SLOT(recordShortcut()));
+		return;
+	}
+
+	if (executionModes->value("mouse") == mode) {
+		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+		inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line as a gesture"));
+		inputLayout->addWidget(new QLabel("For drawing gestures, "));
 	}
 }
 
 void AddingDialog::recordShortcut()
 {
 	QSet<QString> *pressedKeys = KeyPressFilter::getInstance()->getPressedKeys();
+	if (pressedKeys->count() == 0)
+		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+	else
+		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 	QString text = "Currently selected keys:";
 	foreach (const QString &value, *pressedKeys)
 		text += " " + value + " ";
