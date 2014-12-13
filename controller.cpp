@@ -42,3 +42,8 @@ void Controller::deleteMacros(const QString &name)
 	}
 	mMacrosDataController->save(mMacros);
 }
+
+void Controller::setEnabled(KeyPressFilter *keyFilter, bool enable)
+{
+	keyFilter->blockSignals(!enable);
+}

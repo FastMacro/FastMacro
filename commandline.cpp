@@ -25,10 +25,9 @@ void CommandLine::scan()
 	{
 		if (mMacros->contains(curStr))
 		{
-			/// Если нашли - запустили
-			mMacros->value(curStr)->exec();
-			mList.clear();
-			break;
+			QList<Macros*> list = mMacros->values(curStr);
+			foreach(Macros *value, list)
+				value->exec();
 		}
 		--i;
 		curStr.push_front(*i);
@@ -38,17 +37,13 @@ void CommandLine::scan()
 void CommandLine::scanShortcut()
 {
 	QSet<QString> *pressedKeys = KeyPressFilter::getInstance()->getPressedKeys();
-
 	QMap<QString, Macros*>::iterator i;
 	for (i = mMacros->begin(); i != mMacros->end(); ++i) {
 		if (i.key()[0] != '#')
 			continue;
 		QSet<QString> *macrosSet = KeySetConverter::getInstance()->toSet(i.key());
-		if (*macrosSet == *pressedKeys) {
-			delete macrosSet;
+		if (*macrosSet == *pressedKeys)
 			i.value()->exec();
-			break;
-		}
 		delete macrosSet;
 	}
 }

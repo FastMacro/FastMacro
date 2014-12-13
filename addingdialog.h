@@ -44,6 +44,7 @@ private:
 	void initialize();
 	QMap<QString, Macros> *load();
 	void initializeExecutionModes();
+	void initializeMouseGestures();
 	void createCommandWidget(const QString &oldPath, const QString &oldType);
 	QString editingMacrosName;
 	Ui::AddingDialog *ui;
@@ -57,14 +58,21 @@ private:
 	QMap<QString, QString> *executionModes;
 	QList<PreCommand*> *commandList;
 	QSet<QString> *shortcutKeys = nullptr;
+	static const int gesturesNumber = 6;
+	const QString gestureNames[gesturesNumber] = {"horizontalline", "leftlowercorner", "leftuppercorner", "rightlowercorner", "rightuppercorner", "verticalline"};
 };
 
 class CommandDestructor : public QObject {
-	Q_OBJECT
-	public:
-		PreCommand *command;
-		QLayout *commandLayout;
-		QList<PreCommand*> *commandList;
-	public slots:
-		void deleteCommand();
+Q_OBJECT
+public:
+	PreCommand *command;
+	QLayout *commandLayout;
+	QList<PreCommand*> *commandList;
+public slots:
+	void deleteCommand();
+};
+
+class GestureButtonController : public QObject
+{
+Q_OBJECT
 };

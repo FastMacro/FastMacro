@@ -18,6 +18,7 @@ public:
 	void makeMacros(MacrosOutputHolder *holder);
 	void setConnection(KeyPressFilter *keyFilter);
 	void deleteMacros(const QString &name);
+	void setEnabled(KeyPressFilter *keyFilter, bool enable);
 	QMap<QString, Macros*> *getMacroses();
 
 private:
@@ -26,4 +27,5 @@ private:
 	MacrosFactory *mFactory;
 	MacrosDataController *mMacrosDataController;
 	int mSize = 30;
+	bool enabled = true;
 };

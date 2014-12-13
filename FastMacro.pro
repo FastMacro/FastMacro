@@ -49,4 +49,5 @@ FORMS    += mainwindow.ui \
     currentmacrosesdialog.ui
 
 RESOURCES += \
-    systray.qrc
+    systray.qrc \
+    gestures.qrc

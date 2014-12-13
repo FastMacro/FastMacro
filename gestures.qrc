@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/horizontalline.svg</file>
+        <file>images/leftlowercorner.svg</file>
+        <file>images/leftuppercorner.svg</file>
+        <file>images/rightlowercorner.svg</file>
+        <file>images/rightuppercorner.svg</file>
+        <file>images/verticalline.svg</file>
+    </qresource>
+</RCC>

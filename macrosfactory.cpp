@@ -12,5 +12,5 @@ MacrosFactory::~MacrosFactory()
 void MacrosFactory::makeMacros(MacrosOutputHolder *holder)
 {
 	Macros *newMacros = new Macros(holder);
-	mMacros->insert(newMacros->getKeystring(), newMacros);
+	mMacros->insertMulti(newMacros->getKeystring(), newMacros);
 }

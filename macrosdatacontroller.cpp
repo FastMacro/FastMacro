@@ -137,9 +137,8 @@ QMap<QString, Macros*>* MacrosDataController::load()
 	while(!node.isNull())
 	{
 		Macros *newMacros = parseMacros(node);
-		macroses->insert(newMacros->getKeystring(), newMacros);
+		macroses->insertMulti(newMacros->getKeystring(), newMacros);
 		node = node.nextSibling();
 	}
-
 	return macroses;
 }

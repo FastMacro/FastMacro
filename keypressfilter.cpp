@@ -5,7 +5,6 @@ KeyPressFilter *KeyPressFilter::instance = 0;
 
 KeyPressFilter::~KeyPressFilter()
 {
-	enabled = false;
 	delete pressedKeys;
 	instance = nullptr;
 }
@@ -103,7 +102,7 @@ void KeyPressFilter::findMacros()
 }
 
 LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam) {
-	if (((wParam == WM_KEYDOWN && getInstance()->enabled) || wParam == WM_KEYUP))
+	if (wParam == WM_KEYDOWN || wParam == WM_KEYUP)
 	{
 		GUITHREADINFO threadInfo;
 		threadInfo.cbSize = sizeof(GUITHREADINFO);
@@ -145,9 +144,7 @@ LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam
 
 LRESULT CALLBACK KeyPressFilter::MyLowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-
-
-	if(wParam == WM_LBUTTONDOWN && getInstance()->enabled)
+	if(wParam == WM_LBUTTONDOWN)
 	{
 		getInstance()->clearMatrix();
 		qDebug() << "Mouse Pressed!";
@@ -171,7 +168,7 @@ LRESULT CALLBACK KeyPressFilter::MyLowLevelMouseProc(int nCode, WPARAM wParam, L
 		getInstance()->findMacros();
 	}
 
-	if(wParam == WM_MOUSEMOVE && getInstance()->mousePressed && getInstance()->enabled)
+	if(wParam == WM_MOUSEMOVE && getInstance()->mousePressed)
 	{
 		qDebug() << "Mouse Moved!";
 

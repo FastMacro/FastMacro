@@ -202,7 +202,20 @@ void AddingDialog::modeChanged(const QString &mode)
 		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 		inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line as a gesture"));
 		inputLayout->addWidget(new QLabel("For drawing gestures, "));
+		initializeMouseGestures();
 	}
+}
+
+void AddingDialog::initializeMouseGestures()
+{
+	QHBoxLayout *gesturesLayout = new QHBoxLayout;
+
+	for (int i = 0; i < gesturesNumber; i++) {
+		QPushButton *button = new QPushButton;
+		button->setIcon(QIcon(":/images/" + gestureNames[i] + ".svg"));
+		gesturesLayout->addWidget(button);
+	}
+	inputLayout->addLayout(gesturesLayout);
 }
 
 void AddingDialog::recordShortcut()

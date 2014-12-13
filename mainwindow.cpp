@@ -63,7 +63,7 @@ void MainWindow::setConnections()
 
 void MainWindow::yesWasClicked()
 {
-	mKeyFilter->enable();
+	mController->setEnabled(mKeyFilter, true);
 	ui->checkBoxYes->setEnabled(false);
 	ui->checkBoxNo->setEnabled(true);
 	ui->checkBoxNo->setChecked(false);
@@ -71,7 +71,7 @@ void MainWindow::yesWasClicked()
 
 void MainWindow::noWasClicked()
 {
-	mKeyFilter->disable();
+	mController->setEnabled(mKeyFilter, false);
 	ui->checkBoxNo->setEnabled(false);
 	ui->checkBoxYes->setEnabled(true);
 	ui->checkBoxYes->setChecked(false);

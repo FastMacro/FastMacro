@@ -31,14 +31,6 @@ public:
 		return pressedKeys;
 	}
 
-	void enable() {
-		enabled = true;
-	}
-
-	void disable() {
-		enabled = false;
-	}
-
 	void mouseUp() {
 		mousePressed = false;
 	}
@@ -56,7 +48,6 @@ private:
 	KeyPressFilter()
 	{
 		pressedKeys = new QSet<QString>;
-		enabled = true;
 		mousePressed = false;
 
 		hHook = SetWindowsHookEx(WH_KEYBOARD_LL, MyLowLevelKeyBoardProc, NULL, 0);
@@ -121,13 +112,11 @@ private:
 	}
 
 	void emitKeyThrow(QChar symbol) {
-		if (enabled)
-			emit throwChar(symbol);
+		emit throwChar(symbol);
 	}
 
 	void emitMouseThrow() {
-		if (enabled)
-			emit throwMouseEvent();
+		emit throwMouseEvent();
 	}
 
 	HHOOK hHookMouse = NULL;
@@ -141,7 +130,6 @@ private:
 
 	HHOOK hHookFocus;
 	static KeyPressFilter *instance;
-	bool enabled;
 	bool mousePressed;
 	int mapOfGestures[MAP_SIZE][MAP_SIZE];
 
