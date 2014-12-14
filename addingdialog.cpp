@@ -2,7 +2,6 @@
 #include "ui_addingdialog.h"
 #include "keypressfilter.h"
 #include "keysetconverter.h"
-#include <QPushButton>
 #include <QLineEdit>
 
 void clearLayout(QLayout *layout)
@@ -37,6 +36,9 @@ AddingDialog::~AddingDialog()
 void AddingDialog::initialize()
 {
 	commandList->clear();
+
+	gestureController = nullptr;
+	editingGesture = "";
 
 	clearLayout(ui->mainLayout);
 
@@ -91,6 +93,8 @@ void AddingDialog::addMacros()
 
 void AddingDialog::editMacros(Macros *macros) {
 	initialize();
+	if (macros->getType() == "mouse")
+		editingGesture = macros->getKeystring();
 	selectExecutionMode->setCurrentText(executionModes->value(macros->getType()));
 	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 	if (macros->getType() == "keystring") {
@@ -149,7 +153,7 @@ void AddingDialog::OkClicked()
 	else if (selectExecutionMode->currentText() == executionModes->value("shortcut")) {
 		holder = new MacrosOutputHolder(name, "shortcut",  outputCommandList, outputSize, "", shortcutKeys);
 	} else if (selectExecutionMode->currentText() == executionModes->value("mouse"))
-		holder = new MacrosOutputHolder(name, "mouse",  outputCommandList, outputSize, "$horizontalLine", nullptr);
+		holder = new MacrosOutputHolder(name, "mouse",  outputCommandList, outputSize, "$" + gestureController->getGesture(), nullptr);
 	shortcutKeys = nullptr;
 
 	if (editingMacrosName != "")
@@ -201,7 +205,7 @@ void AddingDialog::modeChanged(const QString &mode)
 	if (executionModes->value("mouse") == mode) {
 		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 		inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line as a gesture"));
-		inputLayout->addWidget(new QLabel("For drawing gestures, "));
+		inputLayout->addWidget(new QLabel("For drawing gestures, press Ctrl+F1 and draw your gesture"));
 		initializeMouseGestures();
 	}
 }
@@ -214,6 +218,10 @@ void AddingDialog::initializeMouseGestures()
 		QPushButton *button = new QPushButton;
 		button->setIcon(QIcon(":/images/" + gestureNames[i] + ".svg"));
 		gesturesLayout->addWidget(button);
+		GestureController *controller = new GestureController(this, button, gestureNames[i]);
+		connect(button, SIGNAL(clicked()), controller, SLOT(setGesture()));
+		if (editingGesture == "$" + gestureNames[i].toUpper())
+			setGesture(controller);
 	}
 	inputLayout->addLayout(gesturesLayout);
 }
@@ -267,6 +275,13 @@ void AddingDialog::createCommandWidget(const QString &oldType, const QString &ol
 	connect(deleteButton, SIGNAL(clicked()), destructor, SLOT(deleteLater()));
 
 	macrosLayout->addLayout(layout);
+}
+
+void AddingDialog::setGesture(GestureController *controller) {
+	if (gestureController)
+		gestureController->getButton()->setStyleSheet("background:");
+	gestureController = controller;
+	controller->getButton()->setStyleSheet("background: #C7CDFF");
 }
 
 void CommandDestructor::deleteCommand()

@@ -23,5 +23,6 @@ private:
 	void scanShortcut();
 	QMap<QString, Macros*> *mMacros;
 	QList<QChar> mList;
+	QSet<QString> *drawKeys;
 	int mSize;
 };
