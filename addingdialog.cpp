@@ -3,6 +3,7 @@
 #include "keypressfilter.h"
 #include "keysetconverter.h"
 #include <QLineEdit>
+#include <QString>
 
 void clearLayout(QLayout *layout)
 {
@@ -42,9 +43,10 @@ void AddingDialog::initialize()
 	gestureController = nullptr;
 	editingGesture = "";
 
-	setFixedSize(mWidth, mHeight);
+	clearLayout(ui->mainLayout);
+	setFixedWidth(mWidth);
 	ui->mainLayout->setSpacing(20);
-  QVBoxLayout *nameLayout =  new QVBoxLayout;
+	QVBoxLayout *nameLayout =  new QVBoxLayout;
 	ui->mainLayout->addLayout(nameLayout, 1);
 	nameLayout->setSpacing(5);
 
@@ -66,6 +68,7 @@ void AddingDialog::initialize()
 
 	macrosLayout = new QVBoxLayout;
 	ui->mainLayout->addLayout(macrosLayout);
+	macrosLayout->addWidget(new QLabel("Commands:"));
 	macrosLayout->setSpacing(5);
 
 	QPushButton *addCommandButton = new QPushButton;
@@ -171,6 +174,16 @@ void AddingDialog::keyStringChanged(const QString &key)
 		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 		return;
 	}
+	QString modifiedString = key;
+	std::string normalString = key.toStdString();
+	for (int i = 0; i < key.length(); i++) {
+		char q = normalString[i];
+		if (!(q >= 'a' && q <= 'z') && !(q >= 'A' && q <= 'Z') && !(q >= '0' && q <= '9')) {
+			modifiedString = key.left(i) + key.right(key.length() - i - 1);
+			break;
+		}
+	}
+	keyString->setText(modifiedString);
 	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
@@ -181,7 +194,7 @@ void AddingDialog::modeChanged(const QString &mode)
 	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	if (executionModes->value("keystring") == mode) {
-		QLabel *inputLabel = new QLabel("Enter key string:");
+		QLabel *inputLabel = new QLabel("Enter key string: (only letters and numbers are allowed)");
 		inputLayout->addWidget(inputLabel);
 		keyString = new QLineEdit;
 		inputLayout->addWidget(keyString);
@@ -203,9 +216,8 @@ void AddingDialog::modeChanged(const QString &mode)
 	}
 
 	if (executionModes->value("mouse") == mode) {
-		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-		inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line,\n a vertical line and a left lower corner as a gesture"));
-		inputLayout->addWidget(new QLabel("For drawing gestures, press Ctrl+F1 and draw your gesture"));
+		inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line,\na vertical line and a left lower corner as a gesture"));
+		inputLayout->addWidget(new QLabel("For drawing gestures, hold Ctrl+F1 \nand draw it holding left mouse button"));
 		initializeMouseGestures();
 	}
 }
@@ -281,6 +293,7 @@ void AddingDialog::createCommandWidget(const QString &oldType, const QString &ol
 void AddingDialog::setGesture(GestureController *controller) {
 	if (gestureController)
 		gestureController->getButton()->setStyleSheet("background:");
+	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 	gestureController = controller;
 	controller->getButton()->setStyleSheet("background: #C7CDFF");
 }
