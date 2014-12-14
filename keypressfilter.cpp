@@ -131,6 +131,7 @@ void KeyPressFilter::findMacros()
 		KeyPressFilter::getInstance()->emitMouseThrow("$VERTICALLINE");
 
 	//$LEFTLOWERCORNER
+	tempVector.clear();
 	tempVector.append(qMakePair( 0 ,  0 ));
 	tempVector.append(qMakePair( 0 ,  1 ));
 	tempVector.append(qMakePair( 0 ,  2 ));
@@ -168,6 +169,7 @@ void KeyPressFilter::findMacros()
 		KeyPressFilter::getInstance()->emitMouseThrow("$LEFTLOWERCORNER");
 
 	//$LEFTUPPERCORNER
+	tempVector.clear();
 	tempVector.append(qMakePair( 9 ,  0 ));
 	tempVector.append(qMakePair( 8 ,  0 ));
 	tempVector.append(qMakePair( 7 ,  0 ));
@@ -204,6 +206,7 @@ void KeyPressFilter::findMacros()
 	if(vectorEquals(reversed(tempVector), keyVector))
 		KeyPressFilter::getInstance()->emitMouseThrow("$LEFTUPPERCORNER");
 	//$RIGHTLOWERCORNER
+	tempVector.clear();
 	tempVector.append(qMakePair( 9 ,  0 ));
 	tempVector.append(qMakePair( 9 ,  1 ));
 	tempVector.append(qMakePair( 9 ,  2 ));
@@ -240,6 +243,7 @@ void KeyPressFilter::findMacros()
 	if(vectorEquals(reversed(tempVector), keyVector))
 		KeyPressFilter::getInstance()->emitMouseThrow("$RIGHTLOWERCORNER");
 	//$RIGHTUPPERCORNER
+	tempVector.clear();
 	tempVector.append(qMakePair( 0 ,  0 ));
 	tempVector.append(qMakePair( 1 ,  0 ));
 	tempVector.append(qMakePair( 2 ,  0 ));
