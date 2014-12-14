@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#define MAP_SIZE 20
+#define MAP_SIZE 10
 
 class KeyPressFilter : public QObject
 {

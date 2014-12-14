@@ -1,7 +1,6 @@
 #include "keypressfilter.h"
 #include <QTextStream>
 
-#define MAP_SIZE 10
 #define MAX_X 10000
 #define EPS 10
 
@@ -39,7 +38,6 @@ void KeyPressFilter::clearMatrix()
 
 bool KeyPressFilter::vectorEquals(const QVector < QPair<int, int> > & v1, const QVector < QPair<int, int> > & v2)
 {
-	return(min(v1.size(), v2.size()) >= 1 * levenshteinDistance(v1, v2));
 	return(min(v1.size(), v2.size()) >= 1 * levenshteinDistance(v1, v2));
 }
 
@@ -108,9 +106,9 @@ void KeyPressFilter::findMacros()
 	tempVector.append(qMakePair(9, 5));
 
 	if(vectorEquals(tempVector, keyVector))
-		KeyPressFilter::getInstance()->emitMouseThrow("$HORIZONTALLINE");
+		emitMouseThrow("$HORIZONTALLINE");
 	if(vectorEquals(reversed(tempVector), keyVector))
-		KeyPressFilter::getInstance()->emitMouseThrow("$HORIZONTALLINE");
+		emitMouseThrow("$HORIZONTALLINE");
 	//$VERTICALLINE
 	tempVector.clear();
 	tempVector.append(qMakePair(5, 0));
@@ -125,30 +123,30 @@ void KeyPressFilter::findMacros()
 	tempVector.append(qMakePair(5, 9));
 
 	if(vectorEquals(tempVector, keyVector))
-		KeyPressFilter::getInstance()->emitMouseThrow("$VERTICALLINE");
+		emitMouseThrow("$VERTICALLINE");
 	if(vectorEquals(reversed(tempVector), keyVector))
-		KeyPressFilter::getInstance()->emitMouseThrow("$VERTICALLINE");
+		emitMouseThrow("$VERTICALLINE");
 
 	//$LEFTDOWNCORNER
-	tempVector.append(qMakePair( 0 ,  0 );
-	tempVector.append(qMakePair( 0 ,  1 );
-	tempVector.append(qMakePair( 0 ,  2 );
-	tempVector.append(qMakePair( 0 ,  3 );
-	tempVector.append(qMakePair( 0 ,  4 );
-	tempVector.append(qMakePair( 0 ,  5 );
-	tempVector.append(qMakePair( 0 ,  6 );
-	tempVector.append(qMakePair( 0 ,  7 );
-	tempVector.append(qMakePair( 0 ,  8 );
-	tempVector.append(qMakePair( 0 ,  9 );
-	tempVector.append(qMakePair( 1 ,  9 );
-	tempVector.append(qMakePair( 2 ,  9 );
-	tempVector.append(qMakePair( 3 ,  9 );
-	tempVector.append(qMakePair( 4 ,  9 );
-	tempVector.append(qMakePair( 5 ,  9 );
-	tempVector.append(qMakePair( 6 ,  9 );
-	tempVector.append(qMakePair( 7 ,  9 );
-	tempVector.append(qMakePair( 8 ,  9 );
-	tempVector.append(qMakePair( 9 ,  9 );
+	tempVector.append(qMakePair( 0 ,  0 ));
+	tempVector.append(qMakePair( 0 ,  1 ));
+	tempVector.append(qMakePair( 0 ,  2 ));
+	tempVector.append(qMakePair( 0 ,  3 ));
+	tempVector.append(qMakePair( 0 ,  4 ));
+	tempVector.append(qMakePair( 0 ,  5 ));
+	tempVector.append(qMakePair( 0 ,  6 ));
+	tempVector.append(qMakePair( 0 ,  7 ));
+	tempVector.append(qMakePair( 0 ,  8 ));
+	tempVector.append(qMakePair( 0 ,  9 ));
+	tempVector.append(qMakePair( 1 ,  9 ));
+	tempVector.append(qMakePair( 2 ,  9 ));
+	tempVector.append(qMakePair( 3 ,  9 ));
+	tempVector.append(qMakePair( 4 ,  9 ));
+	tempVector.append(qMakePair( 5 ,  9 ));
+	tempVector.append(qMakePair( 6 ,  9 ));
+	tempVector.append(qMakePair( 7 ,  9 ));
+	tempVector.append(qMakePair( 8 ,  9 ));
+	tempVector.append(qMakePair( 9 ,  9 ));
 	/*
 	1 0 0 0 0 0 0 0 0 0
 	1 0 0 0 0 0 0 0 0 0
@@ -162,7 +160,7 @@ void KeyPressFilter::findMacros()
 	1 1 1 1 1 1 1 1 1 1
 	*/
 	if(vectorEquals(tempVector, keyVector))
-		KeyPressFilter::getInstance()->emitMouseThrow("$LEFTDOWNCORNER");
+		emitMouseThrow("$LEFTDOWNCORNER");
 }
 
 LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam) {
