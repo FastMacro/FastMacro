@@ -203,7 +203,7 @@ void AddingDialog::modeChanged(const QString &mode)
 
 	if (executionModes->value("mouse") == mode) {
 		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-		inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line as a gesture"));
+		inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line,\n a vertical line and a left lower corner as a gesture"));
 		inputLayout->addWidget(new QLabel("For drawing gestures, press Ctrl+F1 and draw your gesture"));
 		initializeMouseGestures();
 	}

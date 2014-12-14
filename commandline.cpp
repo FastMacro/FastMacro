@@ -55,10 +55,8 @@ void CommandLine::scanShortcut()
 
 void CommandLine::catchChar(QChar key)
 {
-	//qDebug() << "CommandLineAAA : char : " <<  key;
 	add(key);
 	scanShortcut();
-	//qDebug() << "scan  done : " <<  key;
 }
 
 void CommandLine::catchMouseEvent(QString type)
