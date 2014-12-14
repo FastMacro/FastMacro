@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Macros Constructor</string>
+   <string>Constructor</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>

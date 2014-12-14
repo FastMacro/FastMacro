@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>141</width>
-    <height>165</height>
+    <width>207</width>
+    <height>132</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>FastMaco</string>
+   <string>FastMacro</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -31,7 +31,7 @@
     <item>
      <widget class="QPushButton" name="addButton">
       <property name="text">
-       <string>add</string>
+       <string>Add macro</string>
       </property>
       <property name="iconSize">
        <size>
@@ -44,7 +44,7 @@
     <item>
      <widget class="QPushButton" name="currentButton">
       <property name="text">
-       <string>currents</string>
+       <string>Show macros</string>
       </property>
      </widget>
     </item>
@@ -55,18 +55,17 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>141</width>
+     <width>207</width>
      <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">
     <property name="title">
-     <string> </string>
+     <string/>
     </property>
    </widget>
    <addaction name="menuTest"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
