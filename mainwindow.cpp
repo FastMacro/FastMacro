@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this); 
-	setFixedSize(180, 100);
+	setFixedSize(190, 100);
 	mAd = new AddingDialog();
 	mCm = new CurrentMacrosesDialog();
 	mKeyFilter = KeyPressFilter::getInstance();

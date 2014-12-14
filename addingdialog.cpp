@@ -216,7 +216,7 @@ void AddingDialog::modeChanged(const QString &mode)
 	}
 
 	if (executionModes->value("mouse") == mode) {
-		inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line,\na vertical line and a left lower corner as a gesture"));
+		//inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line,\na vertical line and a left lower corner as a gesture"));
 		inputLayout->addWidget(new QLabel("For drawing gestures, hold Ctrl+F1 \nand draw it holding left mouse button"));
 		initializeMouseGestures();
 	}

@@ -63,7 +63,7 @@ void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros*> *mMacroses)
 		layout->addWidget(editLine, 0, 0, 1, 3);
 
 		QPushButton *editButton = new QPushButton;
-		editButton->setText("Edit");
+		editButton->setText("Show/Edit");
 		layout->addWidget(editButton, 0, 3, 1, 1);
 
 		QPushButton *deleteButton = new QPushButton;
