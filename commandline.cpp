@@ -5,6 +5,9 @@
 CommandLine::CommandLine(int size, QMap<QString, Macros*> *macroses)
 	: mSize(size), mMacros(macroses)
 {
+	drawKeys = new QSet<QString>;
+	drawKeys->insert("CTRL");
+	drawKeys->insert("F1");
 }
 
 void CommandLine::add(QChar &currentChar)
@@ -57,6 +60,9 @@ void CommandLine::catchChar(QChar key)
 
 void CommandLine::catchMouseEvent()
 {
+	QSet<QString> *pressedKeys = KeyPressFilter::getInstance()->getPressedKeys();
+	if (*pressedKeys != *drawKeys)
+		return;
 	QMap<QString, Macros*>::iterator i;
 	for (i = mMacros->begin(); i != mMacros->end(); ++i)
 	{

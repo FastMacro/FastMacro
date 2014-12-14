@@ -8,9 +8,12 @@
 #include <QDialogButtonBox>
 #include <QList>
 #include <QLabel>
+#include <QPushButton>
 #include <macros.h>
 #include "command.h"
 #include "macrosoutputholder.h"
+
+class GestureController;
 
 namespace Ui {
 class AddingDialog;
@@ -26,7 +29,7 @@ public:
 	void addMacros();
 	void editMacros(Macros *macros);
 	MacrosOutputHolder *holder;
-
+	void setGesture(GestureController *controller);
 signals:
 	void wasUpdated();
 	void deleteMacros(const QString &name);
@@ -47,6 +50,8 @@ private:
 	void initializeMouseGestures();
 	void createCommandWidget(const QString &oldPath, const QString &oldType);
 	QString editingMacrosName;
+	QString editingGesture;
+	GestureController *gestureController = nullptr;
 	Ui::AddingDialog *ui;
 	QLineEdit *macrosName;
 	QVBoxLayout *inputLayout;
@@ -74,7 +79,26 @@ public slots:
 	void deleteCommand();
 };
 
-class GestureButtonController : public QObject
+class GestureController : public QObject
 {
 Q_OBJECT
+public:
+	GestureController(AddingDialog *newDial, QPushButton *newButton, const QString &newGesture) : dial(newDial), button(newButton), gesture(newGesture) {}
+	QPushButton *getButton()
+	{
+		return button;
+	}
+	QString getGesture()
+	{
+		return gesture;
+	}
+public slots:
+	void setGesture()
+	{
+		dial->setGesture(this);
+	}
+private:
+	AddingDialog *dial;
+	QPushButton *button;
+	QString gesture;
 };
