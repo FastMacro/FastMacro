@@ -26,6 +26,8 @@ AddingDialog::AddingDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 	commandList = new QList<PreCommand*>;
+    QIcon icon(":/images/fastMacroIcon2.svg");
+    setWindowIcon(icon);
 }
 
 AddingDialog::~AddingDialog()
@@ -42,6 +44,7 @@ void AddingDialog::initialize()
 
 	clearLayout(ui->mainLayout);
     resize(mWidth, mHeight);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
 
     QVBoxLayout *nameLayout =  new QVBoxLayout;
 	ui->mainLayout->addLayout(nameLayout, 1);
@@ -65,7 +68,7 @@ void AddingDialog::initialize()
 
 	macrosLayout = new QVBoxLayout;
 	ui->mainLayout->addLayout(macrosLayout);
-	macrosLayout->setSpacing(20);
+    macrosLayout->setSpacing(5);
 
 	QPushButton *addCommandButton = new QPushButton;
 	addCommandButton->setText("Add command");
@@ -176,18 +179,24 @@ void AddingDialog::keyStringChanged(const QString &key)
 void AddingDialog::modeChanged(const QString &mode)
 {
 	clearLayout(inputLayout);
-	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+   //    inputLayout->setSizeConstraint(QLayout::SetFixedSize);
+
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	if (executionModes->value("keystring") == mode) {
-		QLabel *inputLabel = new QLabel("Enter key string:");
-		inputLayout->addWidget(inputLabel);
+        resize(mWidth, mHeight);
+        layout()->setSizeConstraint(QLayout::SetFixedSize);
+        QLabel *inputLabel = new QLabel("Enter key string:");
+        inputLayout->addWidget(inputLabel);
 		keyString = new QLineEdit;
 		inputLayout->addWidget(keyString);
-		connect(keyString, SIGNAL(textChanged(QString)), this, SLOT(keyStringChanged(QString)));
+        connect(keyString, SIGNAL(textChanged(QString)), this, SLOT(keyStringChanged(QString)));
 		return;
 	}
 
 	if (executionModes->value("shortcut") == mode) {
+        resize(mWidth + 50, mHeight);
+        layout()->setSizeConstraint(QLayout::SetFixedSize);
 		QHBoxLayout *upperLayout = new QHBoxLayout;
 		QLabel *inputLabel = new QLabel("Press keys you want to use in shortcut:");
 		QPushButton *recordButton = new QPushButton("OK");
@@ -201,6 +210,9 @@ void AddingDialog::modeChanged(const QString &mode)
 	}
 
 	if (executionModes->value("mouse") == mode) {
+        resize(mWidth + 100, mHeight + 100);
+        layout()->setSizeConstraint(QLayout::SetFixedSize);
+
 		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 		inputLayout->addWidget(new QLabel("WARNING: now we are recognizing only a horizontal line as a gesture"));
 		inputLayout->addWidget(new QLabel("For drawing gestures, press Ctrl+F1 and draw your gesture"));
@@ -245,7 +257,6 @@ void AddingDialog::recordShortcut()
 void AddingDialog::createCommandWidget(const QString &oldType, const QString &oldPath)
 {
 	QGridLayout *layout = new QGridLayout;
-	layout->setSpacing(5);
 
 	QComboBox *box = new QComboBox;
 	for (int i = 0; i < Command::commandTypesNumber; i++)

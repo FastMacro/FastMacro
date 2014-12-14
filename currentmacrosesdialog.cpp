@@ -8,13 +8,18 @@ CurrentMacrosesDialog::CurrentMacrosesDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 	ui->mainLayout->setSpacing(50);
-
-	mView = new QLabel("You have no macroses");
+    mView = new QLabel("You have no macros");
+    mView->setFixedWidth(mWidth);
 	ui->mainLayout->addWidget(mView);
 
 	macrosLayout = new QVBoxLayout;
 	ui->mainLayout->addLayout(macrosLayout);
 	macrosLayout->setSpacing(20);
+
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
+    QIcon icon(":/images/fastMacroIcon2.svg");
+    setWindowIcon(icon);
+
 }
 
 CurrentMacrosesDialog::~CurrentMacrosesDialog()
@@ -29,14 +34,24 @@ void CurrentMacrosesDialog::closeEvent(QCloseEvent *event)
 	event->accept();
 }
 
+void CurrentMacrosesDialog::printNumberOfMacros()
+{
+    QString text;
+    if (mNumberOfMacroses == 0)
+        text = "You have no macros";
+    else if (mNumberOfMacroses == 1)
+        text = "You have one macro";
+    else
+        text = "You have " + QString::number(mNumberOfMacroses) + " macros";
+    mView->setText(text);
+}
+
 void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros*> *mMacroses)
 {
 	MacrosDestructor::clearLayout(macrosLayout);
     resize(mWidth, mHeight);
     mNumberOfMacroses = mMacroses->count();
-    mView->setText("You have " + QString::number(mNumberOfMacroses) + " macros"
-                   + (mNumberOfMacroses != 1 ? "es" : ""));
-
+    printNumberOfMacros();
 	for (QMap<QString, Macros*>::iterator it = mMacroses->begin(); it != mMacroses->end(); ++it) {
 
 		QGridLayout *layout = new QGridLayout;
@@ -74,15 +89,8 @@ void CurrentMacrosesDialog::emitMacrosEdit(const QString &name)
 void CurrentMacrosesDialog::wasDeleted(const QString &macrosName)
 {
 	mNumberOfMacroses--;
-	QString text;
-	if (mNumberOfMacroses == 0)
-		text = "You have no macroses";
-	else if (mNumberOfMacroses == 1)
-		text = "You have one macros";
-	else
-		text = "You have " + QString::number(mNumberOfMacroses) + " macroses";
-	mView->setText(text);
-	emit deleteMacros(macrosName);
+    printNumberOfMacros();
+    emit deleteMacros(macrosName);
 }
 
 void MacrosDestructor::clearLayout(QLayout *layout)
