@@ -12,10 +12,12 @@ CommandLine::CommandLine(int size, QMap<QString, Macros*> *macroses)
 
 void CommandLine::add(QChar &currentChar)
 {
+	qDebug() << "start";
 	if (mList.size() == mSize)
 		mList.pop_front();
 	mList.push_back(currentChar);
 	scan();
+	qDebug() << "finish";
 }
 
 void CommandLine::scan()
@@ -53,12 +55,13 @@ void CommandLine::scanShortcut()
 
 void CommandLine::catchChar(QChar key)
 {
-	qDebug() << "CommandLine : char : " <<  key;
+	//qDebug() << "CommandLineAAA : char : " <<  key;
 	add(key);
 	scanShortcut();
+	//qDebug() << "scan  done : " <<  key;
 }
 
-void CommandLine::catchMouseEvent()
+void CommandLine::catchMouseEvent(QString type)
 {
 	QSet<QString> *pressedKeys = KeyPressFilter::getInstance()->getPressedKeys();
 	if (*pressedKeys != *drawKeys)
@@ -66,7 +69,7 @@ void CommandLine::catchMouseEvent()
 	QMap<QString, Macros*>::iterator i;
 	for (i = mMacros->begin(); i != mMacros->end(); ++i)
 	{
-		if (i.key() == "$HORIZONTALLINE")
+		if (i.key() == type)
 			i.value()->exec();
 	}
 }

@@ -29,7 +29,7 @@ void Controller::makeMacros(MacrosOutputHolder *holder)
 void Controller::setConnection(KeyPressFilter *keyFilter)
 {
 	connect(keyFilter, SIGNAL(throwChar(QChar)), mCommandLine, SLOT(catchChar(QChar)));
-	connect(keyFilter, SIGNAL(throwMouseEvent()), mCommandLine, SLOT(catchMouseEvent()));
+	connect(keyFilter, SIGNAL(throwMouseEvent(QString)), mCommandLine, SLOT(catchMouseEvent(QString)));
 }
 
 void Controller::deleteMacros(const QString &name)
