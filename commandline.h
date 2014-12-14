@@ -16,7 +16,7 @@ public:
 
 public slots:
 	void catchChar(QChar key);
-	void catchMouseEvent();
+	void catchMouseEvent(QString type);
 
 private:
 	void scan();

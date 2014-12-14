@@ -125,9 +125,9 @@ private:
 			emit throwChar(symbol);
 	}
 
-	void emitMouseThrow() {
+	void emitMouseThrow(QString type) {
 		if (enabled)
-			emit throwMouseEvent();
+			emit throwMouseEvent(type);
 	}
 
 	HHOOK hHookMouse = NULL;
@@ -157,5 +157,5 @@ private:
 
 signals:
 	void throwChar(QChar key);
-	void throwMouseEvent();
+	void throwMouseEvent(QString type);
 };
