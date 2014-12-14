@@ -130,26 +130,26 @@ void KeyPressFilter::findMacros()
 	if(vectorEquals(reversed(tempVector), keyVector))
 		KeyPressFilter::getInstance()->emitMouseThrow("$VERTICALLINE");
 
-	//$LEFTDOWNCORNER
-	tempVector.append(qMakePair( 0 ,  0 );
-	tempVector.append(qMakePair( 0 ,  1 );
-	tempVector.append(qMakePair( 0 ,  2 );
-	tempVector.append(qMakePair( 0 ,  3 );
-	tempVector.append(qMakePair( 0 ,  4 );
-	tempVector.append(qMakePair( 0 ,  5 );
-	tempVector.append(qMakePair( 0 ,  6 );
-	tempVector.append(qMakePair( 0 ,  7 );
-	tempVector.append(qMakePair( 0 ,  8 );
-	tempVector.append(qMakePair( 0 ,  9 );
-	tempVector.append(qMakePair( 1 ,  9 );
-	tempVector.append(qMakePair( 2 ,  9 );
-	tempVector.append(qMakePair( 3 ,  9 );
-	tempVector.append(qMakePair( 4 ,  9 );
-	tempVector.append(qMakePair( 5 ,  9 );
-	tempVector.append(qMakePair( 6 ,  9 );
-	tempVector.append(qMakePair( 7 ,  9 );
-	tempVector.append(qMakePair( 8 ,  9 );
-	tempVector.append(qMakePair( 9 ,  9 );
+	//$LEFTLOWERCORNER
+	tempVector.append(qMakePair( 0 ,  0 ));
+	tempVector.append(qMakePair( 0 ,  1 ));
+	tempVector.append(qMakePair( 0 ,  2 ));
+	tempVector.append(qMakePair( 0 ,  3 ));
+	tempVector.append(qMakePair( 0 ,  4 ));
+	tempVector.append(qMakePair( 0 ,  5 ));
+	tempVector.append(qMakePair( 0 ,  6 ));
+	tempVector.append(qMakePair( 0 ,  7 ));
+	tempVector.append(qMakePair( 0 ,  8 ));
+	tempVector.append(qMakePair( 0 ,  9 ));
+	tempVector.append(qMakePair( 1 ,  9 ));
+	tempVector.append(qMakePair( 2 ,  9 ));
+	tempVector.append(qMakePair( 3 ,  9 ));
+	tempVector.append(qMakePair( 4 ,  9 ));
+	tempVector.append(qMakePair( 5 ,  9 ));
+	tempVector.append(qMakePair( 6 ,  9 ));
+	tempVector.append(qMakePair( 7 ,  9 ));
+	tempVector.append(qMakePair( 8 ,  9 ));
+	tempVector.append(qMakePair( 9 ,  9 ));
 	/*
 	1 0 0 0 0 0 0 0 0 0
 	1 0 0 0 0 0 0 0 0 0
@@ -163,7 +163,118 @@ void KeyPressFilter::findMacros()
 	1 1 1 1 1 1 1 1 1 1
 	*/
 	if(vectorEquals(tempVector, keyVector))
-		KeyPressFilter::getInstance()->emitMouseThrow("$LEFTDOWNCORNER");
+		KeyPressFilter::getInstance()->emitMouseThrow("$LEFTLOWERCORNER");
+	if(vectorEquals(reversed(tempVector), keyVector))
+		KeyPressFilter::getInstance()->emitMouseThrow("$LEFTLOWERCORNER");
+
+	//$LEFTUPPERCORNER
+	tempVector.append(qMakePair( 9 ,  0 ));
+	tempVector.append(qMakePair( 8 ,  0 ));
+	tempVector.append(qMakePair( 7 ,  0 ));
+	tempVector.append(qMakePair( 6 ,  0 ));
+	tempVector.append(qMakePair( 5 ,  0 ));
+	tempVector.append(qMakePair( 4 ,  0 ));
+	tempVector.append(qMakePair( 3 ,  0 ));
+	tempVector.append(qMakePair( 2 ,  0 ));
+	tempVector.append(qMakePair( 1 ,  0 ));
+	tempVector.append(qMakePair( 0 ,  0 ));
+	tempVector.append(qMakePair( 0 ,  1 ));
+	tempVector.append(qMakePair( 0 ,  2 ));
+	tempVector.append(qMakePair( 0 ,  3 ));
+	tempVector.append(qMakePair( 0 ,  4 ));
+	tempVector.append(qMakePair( 0 ,  5 ));
+	tempVector.append(qMakePair( 0 ,  6 ));
+	tempVector.append(qMakePair( 0 ,  7 ));
+	tempVector.append(qMakePair( 0 ,  8 ));
+	tempVector.append(qMakePair( 0 ,  9 ));
+	/*
+	1 1 1 1 1 1 1 1 1 1
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	*/
+	if(vectorEquals(tempVector, keyVector))
+		KeyPressFilter::getInstance()->emitMouseThrow("$LEFTUPPERCORNER");
+	if(vectorEquals(reversed(tempVector), keyVector))
+		KeyPressFilter::getInstance()->emitMouseThrow("$LEFTUPPERCORNER");
+	//$RIGHTLOWERCORNER
+	tempVector.append(qMakePair( 9 ,  0 ));
+	tempVector.append(qMakePair( 9 ,  1 ));
+	tempVector.append(qMakePair( 9 ,  2 ));
+	tempVector.append(qMakePair( 9 ,  3 ));
+	tempVector.append(qMakePair( 9 ,  4 ));
+	tempVector.append(qMakePair( 9 ,  5 ));
+	tempVector.append(qMakePair( 9 ,  6 ));
+	tempVector.append(qMakePair( 9 ,  7 ));
+	tempVector.append(qMakePair( 9 ,  8 ));
+	tempVector.append(qMakePair( 9 ,  9 ));
+	tempVector.append(qMakePair( 8 ,  9 ));
+	tempVector.append(qMakePair( 7 ,  9 ));
+	tempVector.append(qMakePair( 6 ,  9 ));
+	tempVector.append(qMakePair( 5 ,  9 ));
+	tempVector.append(qMakePair( 4 ,  9 ));
+	tempVector.append(qMakePair( 3 ,  9 ));
+	tempVector.append(qMakePair( 2 ,  9 ));
+	tempVector.append(qMakePair( 1 ,  9 ));
+	tempVector.append(qMakePair( 0 ,  9 ));
+	/*
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	1 1 1 1 1 1 1 1 1 1
+	*/
+	if(vectorEquals(tempVector, keyVector))
+		KeyPressFilter::getInstance()->emitMouseThrow("$RIGHTLOWERCORNER");
+	if(vectorEquals(reversed(tempVector), keyVector))
+		KeyPressFilter::getInstance()->emitMouseThrow("$RIGHTLOWERCORNER");
+	//$RIGHTUPPERCORNER
+	tempVector.append(qMakePair( 0 ,  0 ));
+	tempVector.append(qMakePair( 1 ,  0 ));
+	tempVector.append(qMakePair( 2 ,  0 ));
+	tempVector.append(qMakePair( 3 ,  0 ));
+	tempVector.append(qMakePair( 4 ,  0 ));
+	tempVector.append(qMakePair( 5 ,  0 ));
+	tempVector.append(qMakePair( 6 ,  0 ));
+	tempVector.append(qMakePair( 7 ,  0 ));
+	tempVector.append(qMakePair( 8 ,  0 ));
+	tempVector.append(qMakePair( 9 ,  0 ));
+	tempVector.append(qMakePair( 9 ,  1 ));
+	tempVector.append(qMakePair( 9 ,  2 ));
+	tempVector.append(qMakePair( 9 ,  3 ));
+	tempVector.append(qMakePair( 9 ,  4 ));
+	tempVector.append(qMakePair( 9 ,  5 ));
+	tempVector.append(qMakePair( 9 ,  6 ));
+	tempVector.append(qMakePair( 9 ,  7 ));
+	tempVector.append(qMakePair( 9 ,  8 ));
+	tempVector.append(qMakePair( 9 ,  9 ));
+	/*
+	1 1 1 1 1 1 1 1 1 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	*/
+	if(vectorEquals(tempVector, keyVector))
+		KeyPressFilter::getInstance()->emitMouseThrow("$RIGHTUPPERCORNER");
+	if(vectorEquals(reversed(tempVector), keyVector))
+		KeyPressFilter::getInstance()->emitMouseThrow("$RIGHTUPPERCORNER");
 }
 
 LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam) {
