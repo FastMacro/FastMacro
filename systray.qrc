@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
-        <file>images/fastMacroIcon2.svg</file>
-    </qresource>
+	<qresource prefix="/">
+		<file>images/fastMacroIcon2.svg</file>
+	</qresource>
 </RCC>

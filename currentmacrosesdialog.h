@@ -33,13 +33,13 @@ public slots:
 	void wasDeleted(const QString &name);
 
 private:
-    void printNumberOfMacros();
+	void printNumberOfMacros();
 	void closeEvent(QCloseEvent* event);
 	QLabel *mView;
 	QVBoxLayout *macrosLayout;
 	int mNumberOfMacroses = 0;
-    const int mWidth = 200;
-    const int mHeight = 50;
+	const int mWidth = 200;
+	const int mHeight = 50;
 	Ui::CurrentMacrosesDialog *ui;
 };
 

@@ -64,9 +64,9 @@ private:
 	QList<PreCommand*> *commandList;
 	QSet<QString> *shortcutKeys = nullptr;
 	static const int gesturesNumber = 6;
-    const QString gestureNames[gesturesNumber] = {"horizontalline", "leftlowercorner", "leftuppercorner", "rightlowercorner", "rightuppercorner", "verticalline"};
-    const int mWidth = 275;
-    const int mHeight = 266;
+	const QString gestureNames[gesturesNumber] = {"horizontalline", "leftlowercorner", "leftuppercorner", "rightlowercorner", "rightuppercorner", "verticalline"};
+	const int mWidth = 300;
+	const int mHeight = 300;
 };
 
 class CommandDestructor : public QObject {
