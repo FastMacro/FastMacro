@@ -3,6 +3,7 @@
 
 #define MAX_X 10000
 #define EPS 10
+#define MAX_LEVENSHTEIN 1000000000
 
 KeyPressFilter *KeyPressFilter::instance = 0;
 
@@ -99,7 +100,7 @@ void KeyPressFilter::clearMatrix()
 
 bool KeyPressFilter::vectorEquals(const QVector < QPair<int, int> > & v1, const QVector < QPair<int, int> > & v2)
 {
-	return(min(v1.size(), v2.size()) >= 1 * levenshteinDistance(v1, v2));
+	return(min(v1.size(), v2.size()) >= 2 * levenshteinDistance(v1, v2));
 }
 
 QVector < QPair<int, int> > reversed(QVector < QPair<int, int> > & in ) {
@@ -153,6 +154,9 @@ void KeyPressFilter::findMacros()
 		//qDebug() << idX << " " << idY;
 	}
 
+	int minimumLevenshtein = MAX_LEVENSHTEIN;
+	QString gesture = "";
+
 	//$HORIZONTALLINE
 	tempVector.clear();
 	tempVector.append(qMakePair(0, 5));
@@ -166,10 +170,14 @@ void KeyPressFilter::findMacros()
 	tempVector.append(qMakePair(8, 5));
 	tempVector.append(qMakePair(9, 5));
 
-	if(vectorEquals(tempVector, keyVector))
-		emitMouseThrow("$HORIZONTALLINE");
-	if(vectorEquals(reversed(tempVector), keyVector))
-		emitMouseThrow("$HORIZONTALLINE");
+	if(vectorEquals(tempVector, keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$HORIZONTALLINE";
+	}
+	if(vectorEquals(reversed(tempVector), keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+			minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+			gesture = "$HORIZONTALLINE";
+	}
 	//$VERTICALLINE
 	tempVector.clear();
 	tempVector.append(qMakePair(5, 0));
@@ -183,12 +191,17 @@ void KeyPressFilter::findMacros()
 	tempVector.append(qMakePair(5, 8));
 	tempVector.append(qMakePair(5, 9));
 
-	if(vectorEquals(tempVector, keyVector))
-		emitMouseThrow("$VERTICALLINE");
-	if(vectorEquals(reversed(tempVector), keyVector))
-		emitMouseThrow("$VERTICALLINE");
+	if(vectorEquals(tempVector, keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$VERTICALLINE";
+	}
+	if(vectorEquals(reversed(tempVector), keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$VERTICALLINE";
+	}
 
-	//$LEFTDOWNCORNER
+	//$LEFTLOWERCORNER
+	tempVector.clear();
 	tempVector.append(qMakePair( 0 ,  0 ));
 	tempVector.append(qMakePair( 0 ,  1 ));
 	tempVector.append(qMakePair( 0 ,  2 ));
@@ -220,10 +233,143 @@ void KeyPressFilter::findMacros()
 	1 0 0 0 0 0 0 0 0 0
 	1 1 1 1 1 1 1 1 1 1
 	*/
-	if(vectorEquals(tempVector, keyVector))
-		emitMouseThrow("$LEFTLOWERCORNER");
-	if(vectorEquals(reversed(tempVector), keyVector))
-		emitMouseThrow("$LEFTLOWERCORNER");
+	if(vectorEquals(tempVector, keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$LEFTLOWERCORNER";
+	}
+	if(vectorEquals(reversed(tempVector), keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$LEFTLOWERCORNER";
+	}
+
+	//$LEFTUPPERCORNER
+	tempVector.clear();
+	tempVector.append(qMakePair( 9 ,  0 ));
+	tempVector.append(qMakePair( 8 ,  0 ));
+	tempVector.append(qMakePair( 7 ,  0 ));
+	tempVector.append(qMakePair( 6 ,  0 ));
+	tempVector.append(qMakePair( 5 ,  0 ));
+	tempVector.append(qMakePair( 4 ,  0 ));
+	tempVector.append(qMakePair( 3 ,  0 ));
+	tempVector.append(qMakePair( 2 ,  0 ));
+	tempVector.append(qMakePair( 1 ,  0 ));
+	tempVector.append(qMakePair( 0 ,  0 ));
+	tempVector.append(qMakePair( 0 ,  1 ));
+	tempVector.append(qMakePair( 0 ,  2 ));
+	tempVector.append(qMakePair( 0 ,  3 ));
+	tempVector.append(qMakePair( 0 ,  4 ));
+	tempVector.append(qMakePair( 0 ,  5 ));
+	tempVector.append(qMakePair( 0 ,  6 ));
+	tempVector.append(qMakePair( 0 ,  7 ));
+	tempVector.append(qMakePair( 0 ,  8 ));
+	tempVector.append(qMakePair( 0 ,  9 ));
+	/*
+	1 1 1 1 1 1 1 1 1 1
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	1 0 0 0 0 0 0 0 0 0
+	*/
+	if(vectorEquals(tempVector, keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$LEFTUPPERCORNER";
+	}
+	if(vectorEquals(reversed(tempVector), keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$LEFTUPPERCORNER";
+	}
+
+	//$RIGHTLOWERCORNER
+	tempVector.clear();
+	tempVector.append(qMakePair( 9 ,  0 ));
+	tempVector.append(qMakePair( 9 ,  1 ));
+	tempVector.append(qMakePair( 9 ,  2 ));
+	tempVector.append(qMakePair( 9 ,  3 ));
+	tempVector.append(qMakePair( 9 ,  4 ));
+	tempVector.append(qMakePair( 9 ,  5 ));
+	tempVector.append(qMakePair( 9 ,  6 ));
+	tempVector.append(qMakePair( 9 ,  7 ));
+	tempVector.append(qMakePair( 9 ,  8 ));
+	tempVector.append(qMakePair( 9 ,  9 ));
+	tempVector.append(qMakePair( 8 ,  9 ));
+	tempVector.append(qMakePair( 7 ,  9 ));
+	tempVector.append(qMakePair( 6 ,  9 ));
+	tempVector.append(qMakePair( 5 ,  9 ));
+	tempVector.append(qMakePair( 4 ,  9 ));
+	tempVector.append(qMakePair( 3 ,  9 ));
+	tempVector.append(qMakePair( 2 ,  9 ));
+	tempVector.append(qMakePair( 1 ,  9 ));
+	tempVector.append(qMakePair( 0 ,  9 ));
+	/*
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	1 1 1 1 1 1 1 1 1 1
+	*/
+	if(vectorEquals(tempVector, keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$RIGHTLOWERCORNER";
+	}
+	if(vectorEquals(reversed(tempVector), keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$RIGHTLOWERCORNER";
+	}
+
+	//$RIGHTUPPERCORNER
+	tempVector.clear();
+	tempVector.append(qMakePair( 0 ,  0 ));
+	tempVector.append(qMakePair( 1 ,  0 ));
+	tempVector.append(qMakePair( 2 ,  0 ));
+	tempVector.append(qMakePair( 3 ,  0 ));
+	tempVector.append(qMakePair( 4 ,  0 ));
+	tempVector.append(qMakePair( 5 ,  0 ));
+	tempVector.append(qMakePair( 6 ,  0 ));
+	tempVector.append(qMakePair( 7 ,  0 ));
+	tempVector.append(qMakePair( 8 ,  0 ));
+	tempVector.append(qMakePair( 9 ,  0 ));
+	tempVector.append(qMakePair( 9 ,  1 ));
+	tempVector.append(qMakePair( 9 ,  2 ));
+	tempVector.append(qMakePair( 9 ,  3 ));
+	tempVector.append(qMakePair( 9 ,  4 ));
+	tempVector.append(qMakePair( 9 ,  5 ));
+	tempVector.append(qMakePair( 9 ,  6 ));
+	tempVector.append(qMakePair( 9 ,  7 ));
+	tempVector.append(qMakePair( 9 ,  8 ));
+	tempVector.append(qMakePair( 9 ,  9 ));
+	/*
+	1 1 1 1 1 1 1 1 1 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	0 0 0 0 0 0 0 0 0 1
+	*/
+	if(vectorEquals(tempVector, keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$RIGHTUPPERCORNER";
+	}
+	if(vectorEquals(reversed(tempVector), keyVector) && levenshteinDistance(tempVector, keyVector) < minimumLevenshtein) {
+		minimumLevenshtein = levenshteinDistance(tempVector, keyVector);
+		gesture = "$RIGHTUPPERCORNER";
+	}
+
+	if (gesture != "")
+		emitMouseThrow(gesture);
 }
 
 LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam) {
