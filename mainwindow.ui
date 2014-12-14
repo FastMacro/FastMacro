@@ -6,32 +6,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>115</width>
+    <width>141</width>
     <height>165</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Test</string>
+   <string>FastMaco</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QCheckBox" name="checkBoxYes">
+     <widget class="QCheckBox" name="checkBoxState">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="text">
-       <string>Yes</string>
+       <string>Active</string>
       </property>
       <property name="checked">
        <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QCheckBox" name="checkBoxNo">
-      <property name="text">
-       <string>No</string>
       </property>
      </widget>
     </item>
@@ -62,13 +55,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>115</width>
-     <height>25</height>
+     <width>141</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">
     <property name="title">
-     <string>Test</string>
+     <string> </string>
     </property>
    </widget>
    <addaction name="menuTest"/>

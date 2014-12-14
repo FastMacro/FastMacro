@@ -38,6 +38,12 @@ void MainWindow::startTrayIcon()
 {
     minimizeAction = new QAction(tr("Show"), this);
     connect(minimizeAction, SIGNAL(triggered()), this, SLOT(showNormal()));
+
+    changeStateAction = new QAction(tr("Active"), this);
+    connect(changeStateAction, SIGNAL(triggered()), this, SLOT(trayCheck()));
+    changeStateAction->setCheckable(true);
+    changeStateAction->setChecked(true);
+
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
@@ -55,26 +61,20 @@ void MainWindow::setConnections()
     connect(mAd, SIGNAL(refreshCurrentMacroses()), mSender, SLOT(needMacroses()));
     connect(mCm, SIGNAL(deleteMacros(QString)), mSender, SLOT(deleteMacros(QString)));
     connect(mCm, SIGNAL(editMacros(QString)), mSender, SLOT(editMacros(QString)));
-    connect(ui->checkBoxNo, SIGNAL(clicked()), this, SLOT(noWasClicked()));
-    connect(ui->checkBoxYes, SIGNAL(clicked()), this, SLOT(yesWasClicked()));
+    connect(ui->checkBoxState, SIGNAL(clicked()), this, SLOT(activeWasClicked()));
     connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addWasClicked()));
     connect(ui->currentButton, SIGNAL(clicked()), mSender, SLOT(needMacroses()));
 }
 
-void MainWindow::yesWasClicked()
+void MainWindow::activeWasClicked()
 {
-	mController->setEnabled(mKeyFilter, true);
-	ui->checkBoxYes->setEnabled(false);
-	ui->checkBoxNo->setEnabled(true);
-	ui->checkBoxNo->setChecked(false);
+    mController->setEnabled(mKeyFilter, ui->checkBoxState->isChecked());
 }
 
-void MainWindow::noWasClicked()
+void MainWindow::trayCheck()
 {
-	mController->setEnabled(mKeyFilter, false);
-	ui->checkBoxNo->setEnabled(false);
-	ui->checkBoxYes->setEnabled(true);
-	ui->checkBoxYes->setChecked(false);
+    ui->checkBoxState->setChecked(!ui->checkBoxState->isChecked());
+    activeWasClicked();
 }
 
 void MainWindow::addWasClicked()
@@ -113,6 +113,7 @@ void MainWindow::createTrayIcon()
 {
     trayIconMenu = new QMenu(this);
     trayIconMenu->addAction(minimizeAction);
+    trayIconMenu->addAction(changeStateAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(quitAction);
     trayIcon = new QSystemTrayIcon(this);

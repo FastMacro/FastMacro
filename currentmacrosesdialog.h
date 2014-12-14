@@ -37,6 +37,8 @@ private:
 	QLabel *mView;
 	QVBoxLayout *macrosLayout;
 	int mNumberOfMacroses = 0;
+    const int mWidth = 250;
+    const int mHeight = 50;
 	Ui::CurrentMacrosesDialog *ui;
 };
 

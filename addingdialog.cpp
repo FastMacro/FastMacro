@@ -39,11 +39,9 @@ void AddingDialog::initialize()
 	commandList->clear();
 
 	clearLayout(ui->mainLayout);
+    resize(mWidth, mHeight);
 
-	ui->mainLayout->setSpacing(50);
-	ui->mainLayout->addWidget(new QLabel("Macros Constructor"));
-
-	QVBoxLayout *nameLayout =  new QVBoxLayout;
+    QVBoxLayout *nameLayout =  new QVBoxLayout;
 	ui->mainLayout->addLayout(nameLayout, 1);
 	nameLayout->setSpacing(20);
 
@@ -212,8 +210,10 @@ void AddingDialog::initializeMouseGestures()
 
 	for (int i = 0; i < gesturesNumber; i++) {
 		QPushButton *button = new QPushButton;
-		button->setIcon(QIcon(":/images/" + gestureNames[i] + ".svg"));
-		gesturesLayout->addWidget(button);
+        QPixmap pixmap(":/images/" + gestureNames[i] + ".svg");
+        QIcon ButtonIcon(pixmap);
+        button->setIcon(ButtonIcon);
+        gesturesLayout->addWidget(button);
 	}
 	inputLayout->addLayout(gesturesLayout);
 }

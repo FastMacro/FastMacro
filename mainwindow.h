@@ -27,11 +27,11 @@ protected:
 
 public slots:
     /// start scanning user's text mode
-	void yesWasClicked();
-    /// finish scanning user's text mode
-	void noWasClicked();
-    /// open the window of adding new macros
-	void addWasClicked();
+    void activeWasClicked();
+    /// check from systray was done
+    void trayCheck();
+
+    void addWasClicked();
 
 private slots:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
@@ -42,6 +42,7 @@ private:
     void startTrayIcon();
     void setConnections();
     QAction *minimizeAction;
+    QAction *changeStateAction;
     QAction *quitAction;
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;

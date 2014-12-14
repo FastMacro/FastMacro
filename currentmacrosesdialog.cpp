@@ -32,8 +32,10 @@ void CurrentMacrosesDialog::closeEvent(QCloseEvent *event)
 void CurrentMacrosesDialog::showMacroses(QMap<QString, Macros*> *mMacroses)
 {
 	MacrosDestructor::clearLayout(macrosLayout);
-	mNumberOfMacroses = mMacroses->count();
-	mView->setText("You have " + QString::number(mNumberOfMacroses) + " macroses");
+    resize(mWidth, mHeight);
+    mNumberOfMacroses = mMacroses->count();
+    mView->setText("You have " + QString::number(mNumberOfMacroses) + " macros"
+                   + (mNumberOfMacroses != 1 ? "es" : ""));
 
 	for (QMap<QString, Macros*>::iterator it = mMacroses->begin(); it != mMacroses->end(); ++it) {
 
