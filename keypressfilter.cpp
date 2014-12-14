@@ -222,6 +222,8 @@ void KeyPressFilter::findMacros()
 	*/
 	if(vectorEquals(tempVector, keyVector))
 		emitMouseThrow("$LEFTLOWERCORNER");
+	if(vectorEquals(reversed(tempVector), keyVector))
+		emitMouseThrow("$LEFTLOWERCORNER");
 }
 
 LRESULT CALLBACK KeyPressFilter::MyLowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam) {
