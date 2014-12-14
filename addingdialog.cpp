@@ -41,11 +41,12 @@ void AddingDialog::initialize()
 	editingGesture = "";
 
 	clearLayout(ui->mainLayout);
-    resize(mWidth, mHeight);
+	resize(mWidth, mHeight);
+	ui->mainLayout->setSpacing(20);
 
-    QVBoxLayout *nameLayout =  new QVBoxLayout;
+	QVBoxLayout *nameLayout =  new QVBoxLayout;
 	ui->mainLayout->addLayout(nameLayout, 1);
-	nameLayout->setSpacing(20);
+	nameLayout->setSpacing(5);
 
 	nameLayout->addWidget(new QLabel("Type macros name:"));
 	macrosName = new QLineEdit;
@@ -53,7 +54,7 @@ void AddingDialog::initialize()
 
 	QVBoxLayout *modeLayout = new QVBoxLayout;
 	ui->mainLayout->addLayout(modeLayout, 1);
-	modeLayout->setSpacing(20);
+	modeLayout->setSpacing(5);
 
 	modeLayout->addWidget(new QLabel("Select macros execution type:"));
 	selectExecutionMode = new QComboBox();
@@ -61,11 +62,11 @@ void AddingDialog::initialize()
 
 	inputLayout = new QVBoxLayout;
 	ui->mainLayout->addLayout(inputLayout);
-	inputLayout->setSpacing(20);
+	inputLayout->setSpacing(5);
 
 	macrosLayout = new QVBoxLayout;
 	ui->mainLayout->addLayout(macrosLayout);
-	macrosLayout->setSpacing(20);
+	macrosLayout->setSpacing(5);
 
 	QPushButton *addCommandButton = new QPushButton;
 	addCommandButton->setText("Add command");
